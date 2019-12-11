@@ -1,0 +1,1 @@
+less 11.cpp && g++ -Wall -Wextra 11.cpp && ./a.out 1 58 100 100 105 < /tmp/input.txt > meuk.txt && ./convert.sh && convert -delay 20 $(ls | grep '....\.pgm.png') $(ls | grep '....\.pgm.png' | tail -n1) $(ls | grep '....\.pgm.png' | tail -n1) $(ls | grep '....\.pgm.png' | tail -n1) $(ls | grep '....\.pgm.png' | tail -n1) -loop 0 robot.gif; rm $(ls | grep '....\.pgm$')

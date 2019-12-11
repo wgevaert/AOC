@@ -69,11 +69,17 @@ int main(int argc, char* argv[]) {
     long unsigned painted_total=0;
     int rob_x=board_size,rob_y=board_size, dir_x=0, dir_y=-1, cnt=0, init_color;
     int max_x=board_size, max_y=board_size, min_x=board_size, min_y=board_size;
-    bool paint_or_move=false;
+    bool paint_or_move=false, fixed_size=false;
     std::ofstream image;
 
-    if (argc != 2) {
-       std::cout<<"EXACTLY 1 TERMINAL PARAMETER EXPECTED"<<std::endl;
+    if (argc == 6) {
+        min_x = std::stoi(argv[2]);
+        min_y = std::stoi(argv[3]);
+        max_x = std::stoi(argv[4]);
+        max_y = std::stoi(argv[5]);
+        fixed_size = true;
+    } else if (argc !=2) {
+       std::cout<<"EXACTLY 1 or 6 TERMINAL PARAMETER EXPECTED (initial_color [min_x min_y max_x max_y])"<<std::endl;
        return 1;
     }
     init_color = static_cast<int>(argv[1][0] - '0');
@@ -125,37 +131,29 @@ int main(int argc, char* argv[]) {
                 if (paint_or_move) {
                     turn(dir_x,dir_y,input_1);
                     rob_x+=dir_x;rob_y+=dir_y;
-                    if (rob_x < min_x) min_x=rob_x;
+                    if (fixed_size);
+                    else if (rob_x < min_x) min_x=rob_x;
                     else if (rob_y < min_y) min_y=rob_y;
                     else if (rob_x > max_x) max_x=rob_x;
                     else if (rob_y > max_y) max_y=rob_y;
                     std::cout<<"ROBOT NOW AT "<<rob_x<<' '<<rob_y<<" WITH BOARD DIMENSIONS "<<min_x<<','<<min_y<<" UP TO "<<max_x<<','<<max_y<<std::endl;
-                    image.open(std::string((cnt<1000?"0":""))+std::string((cnt<100?"0":""))+std::string((cnt<10?"0":""))+std::to_string(cnt) + ".pgm",std::ofstream::out);image <<"P2 "<<max_x-min_x+1<<' '<<max_y -min_y+1<<' '<<3<<' ';
-                    if (!image.good()){std::cout<<"FAILED TO OPEN "<<(cnt+".txt")<<std::endl;return 1;}
-                    for (int y=min_y;y<=max_y;y++) {
-                        for(int x=max_x;x>=min_x;x--) {
-                            if (x==rob_x && y==rob_y) {
-                                std::cout<<'O';
-                                image<<' '<<'2';
-                            } else {image<<' '<<(hull[x][y]?'3':(painted[x][y]?'1':'0'));std::cout<<(hull[x][y]?'#':' ');}
-                       }std::cout<<std::endl;image<<std::endl;
-                   }image<<std::endl;
-                   image.close();cnt++;
                } else {
                    if (input_1==1)hull[rob_x][rob_y]=true;else if(input_1==0)hull[rob_x][rob_y]=false;else{std::cerr<<"OEI!"<<std::endl;return 1;}
                    if (!painted[rob_x][rob_y]){
                        painted_total++;std::cout<<"TOTAL PAINT INCREASED"<<std::endl;
-                       image.open(std::string((cnt<1000?"0":""))+std::string((cnt<100?"0":""))+std::string((cnt<10?"0":""))+std::to_string(cnt) + ".pgm",std::ofstream::out);image <<"P2 "<<max_x-min_x+1<<' '<<max_y -min_y+1<<' '<<3<<' ';
-                       if (!image.good()){std::cout<<"FAILED TO OPEN "<<(cnt+".txt")<<std::endl;return 1;}
-                           for (int y=min_y;y<=max_y;y++) {
+                       if (fixed_size) {// Images without a fixed size are useless.
+                           image.open(std::string((cnt<1000?"0":""))+std::string((cnt<100?"0":""))+std::string((cnt<10?"0":""))+std::to_string(cnt) + ".pgm",std::ofstream::out);image <<"P2 "<<max_x-min_x+1<<' '<<max_y -min_y+1<<' '<<3<<' ';
+                           if (!image.good()){std::cout<<"FAILED TO OPEN "<<(cnt+".txt")<<std::endl;return 1;}
+                       }
+                       for (int y=min_y;y<=max_y;y++) {
                            for(int x=max_x;x>=min_x;x--) {
                                if (x==rob_x && y==rob_y) {
                                    std::cout<<'O';
-                                   image<<' '<<'2';
-                               } else {image<<' '<<(hull[x][y]?'3':(painted[x][y]?'1':'0'));std::cout<<(hull[x][y]?'#':' ');}
-                           }std::cout<<std::endl;image<<std::endl;
-                       }image<<std::endl;
-                       image.close();cnt++;
+                                   if(fixed_size)image<<' '<<'2';
+                               } else {std::cout<<(hull[x][y]?'#':' ');if(fixed_size)image<<' '<<(hull[x][y]?'3':(painted[x][y]?'1':'0'));}
+                           }std::cout<<std::endl;if(fixed_size)image<<std::endl;
+                       }if(fixed_size)image<<std::endl;
+                       if(fixed_size){image.close();cnt++;}
                    }
                    painted[rob_x][rob_y]=true;
                    std::cout<<"PAINTED "<<rob_x<<' '<<rob_y<<(hull[rob_x][rob_y]?" WHITE":" BLACK")<<std::endl;
