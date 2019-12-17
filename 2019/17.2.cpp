@@ -4,23 +4,22 @@
 #include <string>
 
 void turn(char a, int& dx,int& dy) {
-	int tmp;
-	switch (a) {
-		case 'R':if(dx)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-		case 'L':if(dy)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-	}
+    int tmp;
+    switch (a) {
+        case 'R':if(dx)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
+        case 'L':if(dy)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
+    }
 }
 
 bool in_bounds(int x,int y,int board_size) {
-	return x>=0&&y>=0&&x<board_size&&y<board_size;
+    return x>=0&&y>=0&&x<board_size&&y<board_size;
 }
 
-int main(int argc, char* argv[]) {
+int main() {
     /****************** SETTING UP INTCODE PROGRAM ********************/
     long long int program [4096];
     long long int input, input_1,input_2;
     int position=0, instruction, length=0, param_1,param_2,param_3,rel_base=0,index_1,index_3;
-    long unsigned total_blocks=0;
     std::ifstream input_file;
     input_file.open("/tmp/input.txt");// You might want to change this sometimes
     if (!input_file.good()) {
@@ -43,12 +42,12 @@ int main(int argc, char* argv[]) {
     program[0]=2;
     std::vector<int> routine = 
     {
-		65,44,67,44,65,44,66,44,67,44,66,44,67,44,65,44,66,44,67,10,
-		76,44,6+'0',44,82,44,8+'0',44,82,44,1+'0',2+'0',44,76,44,6+'0',44,76,44,8+'0',10,
-		76,44,8+'0',44,76,44,1+'0',0+'0',44,76,44,6+'0',44,76,44,6+'0',10,
-		76,44,1+'0',0+'0',44,76,44,8+'0',44,82,44,1+'0',2+'0',10,
-		121,10 //Yes, I do want a livestream :D
-	};
+		65,44,66,44,65,44,67,44,66,44,67,44,66,44,65,44,67,44,66,10,
+		76,44,54,44,82,44,56,44,82,44,49,50,44,76,44,54,44,76,44,56,10,
+		76,44,49,48,44,76,44,56,44,82,44,49,50,10,
+		76,44,56,44,76,44,49,48,44,76,44,54,44,76,44,54,10,
+        121,10 //Yes, I do want a livestream :D
+    };
     auto it = routine.begin();
 
     //Copied IntCode interpreter
@@ -81,7 +80,7 @@ int main(int argc, char* argv[]) {
                /********** Output input_1 to the user/thing. **********/
                if (0<=input_1 && input_1<=255)
                    std::cout<<static_cast<char>(input_1);
-			   else std::cout<<input_1<<std::endl;
+               else std::cout<<input_1<<std::endl;
                /*******************************************************/
                position+=2;
                break;

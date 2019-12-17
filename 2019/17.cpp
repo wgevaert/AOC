@@ -4,23 +4,30 @@
 #include <string>
 
 void turn(char a, int& dx,int& dy) {
-	int tmp;
-	switch (a) {
-		case 'R':if(dx)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-		case 'L':if(dy)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-	}
+    int tmp;
+    switch (a) {
+        case 'R':if(dx)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
+        case 'L':if(dy)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
+    }
 }
 
 bool in_bounds(int x,int y,int board_size) {
-	return x>=0&&y>=0&&x<board_size&&y<board_size;
+    return x>=0&&y>=0&&x<board_size&&y<board_size;
 }
 
-int main(int argc, char* argv[]) {
+std::string print_int(int a) {
+	std::string rtr="";
+	if (a>='A')return std::to_string(a);
+	if (a>=10)rtr += std::to_string(a/10+'0') + ",";
+	rtr += std::to_string(a%10+'0');
+	return rtr;
+}
+
+int main() {
     /****************** SETTING UP INTCODE PROGRAM ********************/
     long long int program [4096];
     long long int input, input_1,input_2;
     int position=0, instruction, length=0, param_1,param_2,param_3,rel_base=0,index_1,index_3;
-    long unsigned total_blocks=0;
     std::ifstream input_file;
     input_file.open("/tmp/input.txt");// You might want to change this sometimes
     if (!input_file.good()) {
@@ -43,8 +50,6 @@ int main(int argc, char* argv[]) {
     const int board_size=100;
     static int board[2*board_size][2*board_size];
     int x_max=0,y_max=0,px=0,py=0,rx,ry,dx,dy;
-    const int ox=board_size,oy=board_size;
-    
 
     //Copied IntCode interpreter
     while((input = program[position]) %100 != 99) {
@@ -75,14 +80,14 @@ int main(int argc, char* argv[]) {
             case 4:if(param_2){std::cout<<"HUH? Ik snap "<<input<<" op "<<position<<" niet"<<std::endl;return 1;}
                /********** Output input_1 to the user/thing. **********/
                switch(static_cast<char>(input_1)) {
-				   case '.':px++;if(px>x_max)x_max=px;break;
-				   case '#':board[px++][py]=1;if(px>x_max)x_max=px;break;
-				   case '^':dx=0;dy=-1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
-				   case '>':dx=1;dy=0;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
-				   case 'v':dx=0;dy=1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
-				   case '<':dx=-1;dy=1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
-				   case '\n':py++;px=0;if(py>y_max)y_max=py;
-			   }
+                   case '.':px++;if(px>x_max)x_max=px;break;
+                   case '#':board[px++][py]=1;if(px>x_max)x_max=px;break;
+                   case '^':dx=0;dy=-1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
+                   case '>':dx=1;dy=0;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
+                   case 'v':dx=0;dy=1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
+                   case '<':dx=-1;dy=1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
+                   case '\n':py++;px=0;if(py>y_max)y_max=py;
+               }
                //std::cout<<static_cast<char>(input_1);
                /*******************************************************/
                position+=2;
@@ -104,53 +109,130 @@ int main(int argc, char* argv[]) {
     }
     int calibration_param = 0;
     for (int i=0;i<y_max;i++) {
-		for(int j=0;j<x_max;j++) {
-			int neighbours=0;
-			if (board[j][i]&&j>0&&j<x_max-1&&i>0&&i<y_max-1) {
-				neighbours = board[j+1][i]+board[j-1][i]+board[j][i+1]+board[j][i-1];
-			}
-			if (neighbours == 4) {
-				calibration_param += i*j;
-				std::cout<<'O';
-				board[j][i]=2;
-			} else
-			    std::cout<<(board[j][i] ? (board[j][i]==1 ?'#':'X'):'.');
-		}std::cout<<std::endl;
-	}
-	std::cout<<"ANSWER: "<<calibration_param<<std::endl;
-	std::vector<char> instructions={};
-	int cnt=0;
-	while (true) {// Let the robot virtually walk.
-		if (in_bounds(rx+dx,ry+dy,board_size) && board[rx+dx][ry+dy]) {
-			board[rx+dx][ry+dy]--;
-		    cnt++;rx+=dx;ry+=dy;
-	    } else {
-			if (cnt>=10)
-			    instructions.push_back(cnt/10+'0');
-			if (cnt>0){
-			    instructions.push_back(cnt%10+'0');
-			    instructions.push_back(',');
-			}
-			int dx2=dx,dy2=dy;
-			turn('R',dx2,dy2);
-			if (in_bounds(rx+dx2,ry+dy2,board_size) && board[rx+dx2][ry+dy2]) {
-				dx=dx2;dy=dy2;
-				instructions.push_back('R');
-				instructions.push_back(',');
-			} else {
-			    turn('L',dx,dy);
-			    if (in_bounds(rx+dx,ry+dy,board_size) && board[rx+dx][ry+dy]) {
-					instructions.push_back('L');
-					instructions.push_back(',');
-				} else break;
-			}
-			cnt=0;
-		}
-	}
-	instructions.pop_back();
-	std::cout<<"The pattern to follow for part 2 is: ";
-	for (auto it : instructions)
-	   std::cout<<static_cast<int>(it)<<',';
+        for(int j=0;j<x_max;j++) {
+            int neighbours=0;
+            if (board[j][i]&&j>0&&j<x_max-1&&i>0&&i<y_max-1) {
+                neighbours = board[j+1][i]+board[j-1][i]+board[j][i+1]+board[j][i-1];
+            }
+            if (neighbours == 4) {
+                calibration_param += i*j;
+                std::cout<<'O';
+                board[j][i]=2;
+            } else
+                std::cout<<(board[j][i] ? (board[j][i]==1 ?'#':'X'):'.');
+        }std::cout<<std::endl;
+    }
+    std::cout<<"ANSWER: "<<calibration_param<<std::endl;
+    std::vector<int> instructions={};
+    int cnt=0;
+    while (true) {// Let the robot virtually walk.
+        if (in_bounds(rx+dx,ry+dy,board_size) && board[rx+dx][ry+dy]) {
+            board[rx+dx][ry+dy]--;
+            cnt++;rx+=dx;ry+=dy;
+        } else {
+            if (cnt>0){
+                instructions.push_back(cnt);
+            }
+            int dx2=dx,dy2=dy;
+            turn('R',dx2,dy2);
+            if (in_bounds(rx+dx2,ry+dy2,board_size) && board[rx+dx2][ry+dy2]) {
+                dx=dx2;dy=dy2;
+                instructions.push_back('R');
+            } else {
+                turn('L',dx,dy);
+                if (in_bounds(rx+dx,ry+dy,board_size) && board[rx+dx][ry+dy]) {
+                    instructions.push_back('L');
+                } else break;
+            }
+            cnt=0;
+        }
+    }
+    int a_end=9,b_begin=10,b_end=19,c_begin=20,c_end=29;
+    bool b_decided=false, c_decided=false;
+    std::vector<char> main;
+    while(true) {
+        int begin = a_end+1,end=begin;
+        bool a_satisfied=true,b_satisfied=true,c_satisfied=true;
+        while((a_satisfied||(b_decided && b_satisfied)||(c_decided&&c_satisfied)) && end<static_cast<int>(instructions.size())) {
+            if (a_satisfied && (end-begin>a_end || instructions.at(end-begin) != instructions.at(end)))
+                a_satisfied= false;
+            if (a_satisfied && end-begin==a_end) {
+                main.push_back('A');
+                begin = ++end;
+                b_satisfied = true;
+                c_satisfied = true;
+                if (end == static_cast<int>(instructions.size()))
+                    break;
+            }
+            if (b_decided && b_satisfied && (end-begin>b_end-b_begin || instructions.at(end-begin+b_begin) != instructions.at(end)))
+                b_satisfied = false;
+            if (b_decided && b_satisfied && end-begin==b_end-b_begin) {
+                main.push_back('B');
+                begin = ++end;
+                a_satisfied = true;
+                c_satisfied = true;
+                if (end == static_cast<int>(instructions.size()))
+                    break;
+            }
+            if (c_decided && c_satisfied && (end-begin>c_end-c_begin || instructions.at(end-begin+c_begin) != instructions.at(end)))
+                c_satisfied = false;
+            if (c_decided && c_satisfied && end-begin==c_end-c_begin) {
+                main.push_back('C');
+                begin = ++end;
+                a_satisfied = true;
+                b_satisfied = true;
+                if (end == static_cast<int>(instructions.size()))
+                    break;
+            }
+            end++;
+        }
+        if (!(a_satisfied||(b_decided && b_satisfied)||(c_decided&&c_satisfied))) {
+            if (!b_decided) {
+                b_end = begin + b_end - b_begin;
+                b_begin = begin;
+                b_decided = true;
+            } else if (!c_decided) {
+                c_end = begin + c_end - c_begin;
+                c_begin = begin;
+                c_decided = true;
+            } else {
+				main.clear();
+				main.push_back('A');
+                if (c_end - c_begin <=2) {
+                    if (b_end - b_begin <=2) {
+                        a_end --;
+                        b_decided = false;
+                        b_end = b_begin + 9;
+                    } else
+                        b_end --;
+                    c_decided = false;
+                    c_end = c_begin+9;
+                } else {
+                    c_end--;
+                }
+            }
+        } else {
+            if (end == static_cast<int>(instructions.size()))
+                break;
+            else  {
+                std::cout<<"SOMETHING REALY WEIRD GOING ON HERE!"<<std::endl;
+                return 1;
+            }
+        }
+    }
+    std::cout<<"The pattern to follow for part 2 is: "<<std::endl;
+    for (unsigned i=0;i<main.size();i++)
+        std::cout<<static_cast<int>(main[i])<<(i==main.size()-1?"":",44,");
+    std::cout<<",10,"<<std::endl;
+    for (int i=0;i<=a_end;i++)
+        std::cout<<print_int(instructions[i])<<(i==a_end?"":",44,");
+    std::cout<<",10,"<<std::endl;
+    for (int i=b_begin;i<=b_end;i++)
+        std::cout<<print_int(instructions[i])<<(i==b_end?"":",44,");
+    std::cout<<",10,"<<std::endl;
+    for (int i=c_begin;i<=c_end;i++)
+        std::cout<<print_int(instructions[i])<<(i==c_end?"":",44,");
+    std::cout<<",10"<<std::endl;
     return 0;
 }
 
