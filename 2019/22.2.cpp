@@ -4,11 +4,7 @@
 
 const long long unsigned numberofcards = 119315717514047;
 
-#define DEAL_NEW 'N'
-#define DEAL_INC 'I'
-#define CUT 'C'
-
-struct linear_relation {
+struct linear_relation { // represents a*x+b
 	long long unsigned a,b;
 	linear_relation(long long unsigned new_a,long long unsigned new_b){a=new_a;b=new_b;}
 };
@@ -53,44 +49,49 @@ linear_relation deal_with_increment(linear_relation pos, long long unsigned incr
 	return linear_relation(safe_mult(pos.a,increment),safe_mult(pos.b,increment));
 }
 
-
-linear_relation recurse(linear_relation pos,long long unsigned numberoftimes) {
-	//a(a(ax+b)+b)+b = a**3x+b(a**2+a+1) = a**3 x + b* ((a**3-1)/(a-1));
-	numberoftimes %=numberofcards -1;
-	linear_relation rtr(1,0);
-	long long unsigned apown = pos.a;
-	while (numberoftimes >0) {
-	    if (numberoftimes %2) {
-			rtr.a = safe_mult(rtr.a,apown);
+linear_relation recurse_and_invert(linear_relation pos,long long unsigned numberoftimes) {
+	//a(a(ax+b)+b)+b = a**3x+b(a**2+a+1) = a**3 x + b* ((a**3-1)/(a-1)) =
+	// a**-3 * (x-b*((a**3-1)/(a-1))) = a**(phi-3)*x - b*a**(phi-3)*(a**3-1)*(a-1)**(phi-1))
+	long long unsigned phi = euler_phi(numberofcards);
+	long long unsigned exp1 = numberoftimes % phi;
+	long long unsigned exp0 = phi - exp1;
+	long long unsigned exp2 = phi - 1;
+	long long unsigned ans0=1,ans1=1,ans2=1;
+	long long unsigned base0 = pos.a, base2 = pos.a-1;
+	while (exp2 > 0) {// Calculate a**exp0, a**exp1 and (a-1)**exp2
+	    if (exp0 %2) {
+			ans0 = safe_mult(ans0,base0);
 		}
-		apown=safe_mult(apown,apown)%numberofcards;
-		numberoftimes = (numberoftimes >>1);
-	}
-	long long unsigned ainv = 1,apowinv=1,apowpow=rtr.a;
-	numberoftimes = euler_phi(numberofcards)-1;//(a-1)^{this number} = (a-1)^-1 mod numberofcards
-	std::cout<<numberoftimes<<'~'<<std::endl;
-	apown=pos.a-1;
-	while (numberoftimes > 0) {
-	    if (numberoftimes % 2) {
-			ainv = safe_mult(ainv,apown);
-			apowinv = safe_mult(apowinv,apowpow);
+	    if (exp1 %2) {
+			ans1 = safe_mult(ans1,base0);
 		}
-		apown=safe_mult(apown,apown);
-		apowpow = safe_mult(apowpow,apowpow);
-		numberoftimes = (numberoftimes >>1);
+	    if (exp2 %2) {
+			ans2 = safe_mult(ans2,base2);
+		}
+		base0=safe_mult(base0,base0);
+		base2=safe_mult(base2,base2);
+		exp0 = (exp0 >>1);
+		exp1 = (exp1 >>1);
+		exp2 = (exp2 >>1);
 	}
-	rtr.b = safe_mult(safe_mult(rtr.a-1,ainv),pos.b);
-	std::cout<<rtr.a<<"*x+"<<rtr.b<<std::endl;
-	unsigned long long final_ans = safe_mult(apowinv,2020-rtr.b+numberofcards);
-	std::cout<<rtr.a<<'*'<<final_ans<<'+'<<rtr.b<<'='<<(safe_mult(rtr.a,final_ans)+rtr.b)%numberofcards<<" mod "<<numberofcards<<std::endl;
-	
-	return rtr;
+	return linear_relation(
+	    ans0,
+	    numberofcards - safe_mult(
+	        pos.b,
+	        safe_mult(
+	            ans0,
+	            safe_mult(
+	                ans1 -1,
+	                ans2
+	            )
+	        )
+	    )
+	);
 }
 
 int main(int argc, char* argv[]) {
 	linear_relation pos_2019(1,0); // the position we're interested in.
 	std::string line;
-	//std::cout<<safe_mult(6,6)<<std::endl;return 1;
 	while (true) {
 		std::getline(std::cin,line);
 		if (line.size() == 0)
@@ -100,17 +101,30 @@ int main(int argc, char* argv[]) {
 				pos_2019 = deal_new_stack(pos_2019);
 				std::cout<<"NEW: "<<pos_2019.a<<"*x+"<<pos_2019.b<<std::endl;
 			} else if (line[5] == 'w') {
-				pos_2019 = deal_with_increment(pos_2019,std::stoull(line.substr(20,line.size()-20)));
-				std::cout<<"INC: "<<pos_2019.a<<"*x+"<<pos_2019.b<<" WITH "<<std::stoull(line.substr(20,line.size()-20))<<std::endl;
-			} else std::cout<<"UNEXPECTED CHAR: "<<line[5]<<' '<<static_cast<int>(line[5])<<std::endl;
+				pos_2019 = deal_with_increment(
+				    pos_2019,
+				    std::stoull(line.substr(20,line.size()-20))
+				);
+				std::cout<<"INC: "<<pos_2019.a
+				         <<"*x+"<<pos_2019.b<<" WITH "
+				         <<std::stoull(line.substr(20,line.size()-20))
+				         <<std::endl;
+			} else std::cout<<"UNEXPECTED CHAR: "<<line[5]<<' '
+			                <<static_cast<int>(line[5])<<std::endl;
 		} else if (line[0] == 'c') {
-			pos_2019 = cut(pos_2019,std::stoi(line.substr(4,line.size()-4)));
-			std::cout<<"CUT: "<<pos_2019.a<<"*x+"<<pos_2019.b<<" WITH "<<std::stoi(line.substr(4,line.size()-4))<<std::endl;
+			pos_2019 = cut(
+			    pos_2019,
+			    std::stoi(line.substr(4,line.size()-4))
+			);
+			std::cout<<"CUT: "<<pos_2019.a<<"*x+"<<pos_2019.b
+			         <<" WITH "<<std::stoi(line.substr(4,line.size()-4))
+			         <<std::endl;
 		}
 	}
 	std::cout<<pos_2019.a<<"*x + "<<pos_2019.b<<" % "<<numberofcards<<std::endl;
-	pos_2019 = recurse(pos_2019,101741582076661);
+	pos_2019 = recurse_and_invert(pos_2019,101741582076661);
 	std::cout<<pos_2019.a<<"*x+"<<pos_2019.b<<std::endl;
+	std::cout<<(safe_mult(pos_2019.a,2020) + pos_2019.b)%numberofcards<<std::endl;
 
 	return 0;
 }
