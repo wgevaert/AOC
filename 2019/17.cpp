@@ -25,9 +25,11 @@ std::string print_int(int a) {
 
 int main() {
     /****************** SETTING UP INTCODE PROGRAM ********************/
-    long long int program [4096];
+    const int program_max_size = 4096;
+    long long int program [program_max_size];
     long long int input, input_1,input_2;
-    int position=0, instruction, length=0, param_1,param_2,param_3,rel_base=0,index_1,index_3;
+    bool use_2,use_3;
+    int position=0, instruction, length=0, param_1,param_2,param_3,rel_base=0,index_1,index_2,index_3;
     std::ifstream input_file;
     input_file.open("/tmp/input.txt");// You might want to change this sometimes
     if (!input_file.good()) {
@@ -57,11 +59,21 @@ int main() {
         if (input > 100000||param_1>2||param_2>2||param_3==1||param_3>2) {std::cout<<"ERROR: invalid parameter mode: "<<input<<" at "<<position<<std::endl;return 1;}
         instruction = input %100;
         index_1 = (param_1 ? (param_1 == 1 ? position+1 : program[position+1]+rel_base) : program[position+1]);
-        input_1 = program[index_1];
-        if (instruction !=3 && instruction !=4 && instruction!=9)
-            input_2 = program[(param_2 ? (param_2 == 1 ? position +2 : program[position+2]+rel_base) : program[position+2])];
-        if (instruction==1||instruction==2||instruction==7||instruction==8)
+
+        use_2 = instruction !=3 && instruction !=4 && instruction!=9;
+        use_3 = instruction==1||instruction==2||instruction==7||instruction==8;
+        if (use_2)
+            index_2=(param_2 ? (param_2 == 1 ? position +2 : program[position+2]+rel_base) : program[position+2]);
+        if (use_3)
             index_3=(param_3 ? (param_3 == 1 ? position +3 : program[position+3]+rel_base) : program[position+3]);
+
+        if (index_1>=program_max_size-3||index_2>=program_max_size-3||index_3>=program_max_size-3) {
+            std::cout<<"YOUR INTCODE BUFFER IS TOO SMALL"<<std::endl;
+            return 1;
+        }
+        input_1=program[index_1];
+        if (use_2)
+            input_2=program[index_2];
 
         switch (input % 100) {
             case 1:
@@ -88,7 +100,6 @@ int main() {
                    case '<':dx=-1;dy=1;rx=px;ry=py;board[px++][py]=1;if(px>x_max)x_max=px;break;
                    case '\n':py++;px=0;if(py>y_max)y_max=py;
                }
-               //std::cout<<static_cast<char>(input_1);
                /*******************************************************/
                position+=2;
                break;
@@ -187,6 +198,7 @@ int main() {
             end++;
         }
         if (!(a_satisfied||(b_decided && b_satisfied)||(c_decided&&c_satisfied))) {
+			// Full main is not completely covered by routines.
             if (!b_decided) {
                 b_end = begin + b_end - b_begin;
                 b_begin = begin;

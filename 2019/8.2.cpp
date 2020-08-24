@@ -14,7 +14,7 @@ int main() {
             image[index%width][index/width] = a - '0';
     ++index;
     }
-    for (int i=0;i<size;i++){if(!(i%width))std::cout<<std::endl;std::cout<<(image[i%width][i/width] ? 'x':'.');}
+    for (int i=0;i<size;i++){if(!(i%width))std::cout<<std::endl;std::cout<<(image[i%width][i/width] ? 'X':' ');}
     std::cout<<std::endl;
     return 0;
 }

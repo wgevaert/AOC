@@ -43,7 +43,7 @@ void satisfy(unit& u, auto& map) {
     }
 }
 
-void use(unit& u, auto map) {
+void use(unit& u, auto& map) {
     if(u.used) {
         return;
     }
@@ -71,10 +71,13 @@ long long unsigned get_ore_required (int fuel_req, auto& map) {
 }
 
 unsigned bin_search(unsigned top, unsigned bottom, auto& map) {
-    if (top - bottom <= 1) return bottom;
-    if (get_ore_required((top+bottom)/2,map) > 1000000000000)
-        return bin_search((top+bottom)/2,bottom,map);
-    return bin_search(top,(top+bottom)/2,map);
+    while(top - bottom > 1) {
+        if (get_ore_required((top+bottom)/2,map) > 1000000000000)
+            top = (top+bottom)/2;
+        else
+            bottom = (top+bottom)/2;
+    }
+    return (top+bottom)/2;
 }
 
 int main() {

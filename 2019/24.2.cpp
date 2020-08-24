@@ -13,7 +13,7 @@ bool get_tile(int x,int y,uint32_t*boards,int index) {
         return get_tile(mid_x-1,mid_y,boards,index-1);
     if (y<0)
         return get_tile(mid_x,mid_y-1,boards,index-1);
-    if(x==size_x&&y==size_y)return 0;
+    if(x==mid_x&&y==mid_y)return 0;
     return (boards[index] >> (size_x*y+x))%2;
 }
 

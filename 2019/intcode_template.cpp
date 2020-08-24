@@ -1,25 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>
 
-void turn(char a, int& dx,int& dy) {
-    int tmp;
-    switch (a) {
-        case 'R':if(dx)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-        case 'L':if(dy)std::swap(dx,dy);else{tmp=-1*dx;dx=-1*dy;dy=tmp;}break;
-    }
-}
-
-bool in_bounds(int x,int y,int board_size) {
-    return x>=0&&y>=0&&x<board_size&&y<board_size;
-}
-
-int main() {
+int main(int argc, char* argv[]) {
     /****************** SETTING UP INTCODE PROGRAM ********************/
     const int program_max_size = 4096;
     long long int program [program_max_size];
-    long long int input,input_1,input_2;
+    long long int input, input_1,input_2;
     bool use_2,use_3;
     int position=0, instruction, length=0, param_1,param_2,param_3,rel_base=0,index_1,index_2,index_3;
     std::ifstream input_file;
@@ -34,19 +20,13 @@ int main() {
         input_file>>input;
     }
     input_file.close();
-    if (length>4096){std::cout<<"OEI!"<<std::endl;return 1;}
+    std::cout<<length<<std::endl;
+    if (length>3096){std::cout<<"OEI!"<<std::endl;return 1;}
     program[length]=input;
+    for (int i=0;i<=length;i++) {
+        std::cout<<program[i]<<',';
+    }std::cout<<std::endl;
     /******************************************************************/
-    program[0]=2;
-    std::vector<int> routine = 
-    {
-        65,44,66,44,65,44,67,44,66,44,67,44,66,44,65,44,67,44,66,10,
-        76,44,54,44,82,44,56,44,82,44,49,50,44,76,44,54,44,76,44,56,10,
-        76,44,49,48,44,76,44,56,44,82,44,49,50,10,
-        76,44,56,44,76,44,49,48,44,76,44,54,44,76,44,54,10,
-        121,10 //Yes, I do want a livestream :D
-    };
-    auto it = routine.begin();
 
     //Copied IntCode interpreter
     while((input = program[position]) %100 != 99) {
@@ -63,12 +43,12 @@ int main() {
             index_3=(param_3 ? (param_3 == 1 ? position +3 : program[position+3]+rel_base) : program[position+3]);
 
         if (index_1>=program_max_size-3||index_2>=program_max_size-3||index_3>=program_max_size-3) {
-            std::cout<<"YOUR INTCODE BUFFER IS TOO SMALL"<<std::endl;
-            return 1;
-        }
-        input_1=program[index_1];
-        if (use_2)
-            input_2=program[index_2];
+			std::cout<<"YOUR INTCODE BUFFER IS TOO SMALL"<<std::endl;
+			return 1;
+		}
+		input_1=program[index_1];
+		if (use_2)
+		    input_2=program[index_2];
 
         switch (input % 100) {
             case 1:
@@ -79,16 +59,26 @@ int main() {
                 break;
             case 3:if(param_1==1||param_2!=0||param_3!=0){std::cout<<"HUH? Ik snap "<<input<<" op "<<position<<" niet"<<std::endl;return 1;}
                 /*********** Do some UI-things to get input_1 *********/
-                input_1=*it;it++;
+
+
+
+
+
                 /******************************************************/
                 program[index_1]=input_1;
                 position+=2;
                 break;
             case 4:if(param_2){std::cout<<"HUH? Ik snap "<<input<<" op "<<position<<" niet"<<std::endl;return 1;}
                /********** Output input_1 to the user/thing. **********/
-               if (0<=input_1 && input_1<=255)
-                   std::cout<<static_cast<char>(input_1);
-               else std::cout<<input_1<<std::endl;
+
+
+
+
+
+
+
+
+
                /*******************************************************/
                position+=2;
                break;

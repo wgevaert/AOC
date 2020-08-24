@@ -9,7 +9,7 @@ struct linear_relation { // represents a*x+b
 	linear_relation(long long unsigned new_a,long long unsigned new_b){a=new_a;b=new_b;}
 };
 
-long long unsigned safe_mult(long long unsigned a,long long unsigned b) {
+long long unsigned safe_mult(long long unsigned a,long long unsigned b) { //Multiply without an overflow
 	long long unsigned res = 0;
 	while (b>0) {
 		if (b%2)res = (res+a)%numberofcards;
@@ -36,16 +36,16 @@ long long unsigned euler_phi(long long unsigned a) {
 	return phi;
 }
 
-linear_relation deal_new_stack(linear_relation pos) {
+linear_relation deal_new_stack(linear_relation pos) { // new_pos = numberofcards - old_pos -1
 	return linear_relation((numberofcards - pos.a),numberofcards - pos.b - 1);
 }
 
-linear_relation cut (linear_relation pos, long long unsigned cut_dist) {
+linear_relation cut (linear_relation pos, long long unsigned cut_dist) {// new_pos = old_pos - cut_dist % numberofcards
 	cut_dist = (cut_dist + numberofcards) % numberofcards;// Positive cuts are easier.
 	return linear_relation(pos.a,(pos.b - cut_dist + numberofcards) %numberofcards);
 }
 
-linear_relation deal_with_increment(linear_relation pos, long long unsigned increment) {
+linear_relation deal_with_increment(linear_relation pos, long long unsigned increment) {// new_pos = old_pos * increment % numberofcards
 	return linear_relation(safe_mult(pos.a,increment),safe_mult(pos.b,increment));
 }
 

@@ -188,16 +188,14 @@ int main() {
                 }
             }
             if (!flowed) {
-                x_stopped = myflowers[flwr].px+ox;
-                y_stopped = myflowers[flwr].py+oy;
                 myflowers[flwr].flowing = false;
             }
             if (myflowers[flwr].flowing) {
                 flowing = true;
             }
         }
-        if(false)std::cout<<"\n\nAFTER "<<cnt+1<<" MINUTES:"<<std::endl;
-        if(false)for(int j=y_max;j>=y_min;j--){
+        std::cout<<"\n\nAFTER "<<cnt+1<<" MINUTES:"<<std::endl;
+        for(int j=y_max;j>=y_min;j--){
            for(int i=x_min;i<=x_max;i++){
                if (i==x_stopped && j==y_stopped)
                    std::cout<<'X';

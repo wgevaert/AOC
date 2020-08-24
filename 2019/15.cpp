@@ -88,7 +88,7 @@ int main() {
                 break;
             case 4:if(param_2){std::cout<<"HUH? Ik snap "<<input<<" op "<<position<<" niet"<<std::endl;return 1;}
                /********** Output input_1 to the user/thing. **********/
-               if(false)std::cout<<"ROBOT NOW AT "<<px<<' '<<py<<" MOVING "<<dx<<','<<dy<<" SAYING "<<input_1<<", BOARD SIZE "<<x_min<<','<<y_min<<" UP TO "<<x_max<<','<<y_max<<std::endl;
+               std::cout<<"ROBOT NOW AT "<<px<<' '<<py<<" MOVING "<<dx<<','<<dy<<" SAYING "<<input_1<<", BOARD SIZE "<<x_min<<','<<y_min<<" UP TO "<<x_max<<','<<y_max<<std::endl;
                switch (input_1) {
                    case 0:
                        robot_pos[px+ox+dx][py+oy+dy]=1;
@@ -113,7 +113,7 @@ int main() {
                        std::cout<<"HURRAY!"<<std::endl;
                        found = true;
                }
-               if(false) for(int j=y_max;j>=y_min;j--) {
+               for(int j=y_max;j>=y_min;j--) {
                    for(int i=x_min;i<=x_max;i++){
                        if (i==ox+px && j==oy+py)
                            std::cout<<'R';
