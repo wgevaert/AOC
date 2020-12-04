@@ -68,10 +68,16 @@ int check_passport(const std::string batch) {
                 batch[i+3] ==':' &&
                 batch[i+4]=='2'&&
                 batch[i+5]=='0'&&
-                batch[i+6]>='1'&&
-                batch[i+6]<='2'&&
-                batch[i+7]>='0'&&
-                batch[i+7]<='9'&&
+                (
+                    (
+                        batch[i+6]=='1'&&
+                        batch[i+7]>='0'&&
+                        batch[i+7]<='9'
+                    )||(
+                        batch[i+6]=='2'&&
+                        batch[i+7]=='0'
+                    )
+                )&&
                 (batch[i+8]==' '||batch[i+8]=='\0')
             ) {
                 valid_iyr=true;
@@ -85,10 +91,16 @@ int check_passport(const std::string batch) {
                 batch[i+3] ==':' &&
                 batch[i+4]=='2'&&
                 batch[i+5]=='0'&&
-                batch[i+6]>='2'&&
-                batch[i+6]<='3'&&
-                batch[i+7]>='0'&&
-                batch[i+7]<='9'&&
+                (
+                    (
+                        batch[i+6]=='2'&&
+                        batch[i+7]>='0'&&
+                        batch[i+7]<='9'
+                    )||(
+                        batch[i+6]=='3'&&
+                        batch[i+7]=='0'
+                    )
+                ) &&
                 (batch[i+8]==' '||batch[i+8]=='\0')
             ) {
                 valid_eyr=true;
@@ -304,7 +316,6 @@ int real_main(int argc, char** argv) {
         }
     }
 
-    // To be honest, valids_2 was not correct, but it was close enough to find the correct answer within 4 guesses.
     std::cout<<valids<<' '<<valids_2<<std::endl;
 
     input.close();
