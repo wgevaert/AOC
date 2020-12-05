@@ -70,6 +70,7 @@ int real_main(int argc, char** argv) {
             default:
                 input.unget();
                 std::cerr<<"Unexpected char with value "<<static_cast<int>(input.get())<<" found\n"<<std::flush;
+                exit(1);
         }
     }
 
