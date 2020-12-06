@@ -29,8 +29,9 @@ int real_main(int argc, char** argv) {
 
 
     static bool exists[1024]; // init to 0
-    u_t step=512,index=0,ind_max=0;
+    u_t step=512, index=0, ind_max=0;
     bool reading=true;
+
     while(reading) {
         switch(input.get()) {
             case 'B':
@@ -42,14 +43,14 @@ int real_main(int argc, char** argv) {
                step /= 2;
                break;
             case '\n':
-                if(input.peek()=='\n' || input.peek()==-1) {
+                if(input.peek() == '\n' || input.peek() == -1) {
                     reading = false;
                 }
                 exists[index] = true;
-                if (index> ind_max)
+                if (index > ind_max)
                     ind_max = index;
-                step=512;
-                index=0;
+                step = 512;
+                index = 0;
                 break;
             default:
                 input.unget();
