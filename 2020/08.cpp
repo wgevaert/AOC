@@ -89,7 +89,7 @@ int real_main(int argc, char** argv) {
 
     while (!input.eof()) {
         op_t oper;
-        ll_t val,sign;
+        ll_t val, sign;
         switch (input.get()) {
             case 'a':
                 if (input.get()!='c'||input.get()!='c') {
@@ -100,14 +100,14 @@ int real_main(int argc, char** argv) {
                 break;
             case 'j':
                 if (input.get()!='m'||input.get()!='p') {
-                    std::cerr<<"Did not read acc"<<std::endl;
+                    std::cerr<<"Did not read jmp"<<std::endl;
                     exit(1);
                 }
                 oper = jmp;
                 break;
             case 'n':
                 if (input.get()!='o'||input.get()!='p') {
-                    std::cerr<<"Did not read acc"<<std::endl;
+                    std::cerr<<"Did not read nop"<<std::endl;
                     exit(1);
                 }
                 oper = nop;
@@ -160,13 +160,13 @@ int real_main(int argc, char** argv) {
         if (program[i].op == jmp) {
             program[i].op = nop;
             if (attempt(program, acc_val)) {
-                std::cout<<"Changing "<<i<<" resulted in terminating program with acc_val "<<acc_val<<std::endl;
+                std::cout<<"Changing "<<i<<" to nop resulted in terminating program with acc_val "<<acc_val<<std::endl;
             }
             program[i].op = jmp;
         } else if (program[i].op == nop) {
             program[i].op = jmp;
             if (attempt(program, acc_val)) {
-                std::cout<<"Changing "<<i<<" resulted in terminating program with acc_val "<<acc_val<<std::endl;
+                std::cout<<"Changing "<<i<<" to jmp resulted in terminating program with acc_val "<<acc_val<<std::endl;
             }
             program[i].op = nop;
         }
