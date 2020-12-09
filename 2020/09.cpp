@@ -36,7 +36,7 @@ int real_main(int argc, char** argv) {
         std::cout<<"Running in verbosity mode "<<verb_lvl<<std::endl;
     }
 
-    ull_t in, ans;
+    ull_t in, ans=-1;
 
     std::unordered_set<ull_t> u_received = {};
     std::vector<ull_t> v_received = {};
@@ -72,6 +72,11 @@ int real_main(int argc, char** argv) {
             std::cerr<<"Newline expected..."<<std::endl;
             exit(1);
         }
+    }
+
+    if (ans == static_cast<ull_t>(-1)) {
+        std::cerr<<"No first ans found"<<std::endl;
+        exit(1);
     }
 
     input.close();
