@@ -61,8 +61,10 @@ int real_main(int argc, char** argv) {
             }
         }
         if (!found) {
-            std::cout<<"Found ans "<<in<<std::endl;
+            std::cout<<"Found ans "<<in<<" at "<<v_received.size()<<std::endl;
             ans = in;
+            // Just assume we do not need the rest of the numbers for part 2 o_0
+            break;
         }
         v_received.emplace_back(in);
         u_received.emplace(in);
