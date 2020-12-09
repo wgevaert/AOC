@@ -74,25 +74,38 @@ int real_main(int argc, char** argv) {
 
     input.close();
 
-    std::vector<cookie> yum = {{0,2,v_received[0]+v_received[1]+v_received[2]}};
+    cookie yum(0,2,v_received[0]+v_received[1]+v_received[2]);
 
-    for (int i=3;i<v_received.size();i++) {
-        for (auto& a:yum) {
-            if (a.v == ans) {
-                std::cout<<"Found ans: Between "<<a.b<<" and "<<a.e;
-                u_t min=-1, max=0;
-                for (int j=a.b;j<=a.e;j++) {
-                    if (v_received[j] < min)
-                        min=v_received[j];
-                    if (v_received[j] > max)
-                        max=v_received[j];
-                }
-                std::cout<<" with value "<<(min+max)<<std::endl;
+    while (yum.v != ans) {
+        if (yum.v < ans) {
+            yum.v += v_received[++yum.e];
+        } else {
+            if (yum.e - yum.b <= 2) {
+                yum.v += v_received[++yum.e] - v_received[yum.b++];
+            } else {
+                yum.v -= v_received[yum.b++];
             }
-            a.v += v_received[++a.e]-v_received[a.b++];
         }
-        yum.emplace_back(0, i, yum.back().v + v_received[0]);
+        if (verb_lvl > 1) {
+            std::cout<<"yum from "<<yum.b<<" to "<<yum.e<<" has val "<<yum.v<<std::endl;
+        }
+        if (yum.e >= v_received.size()) {
+            std::cerr<<"No second ans found"<<std::endl;
+            exit(1);
+        }
     }
+
+    std::cout<<"Found ans: Between "<<yum.b<<" and "<<yum.e;
+
+    u_t min=-1, max=0;
+    for (int j=yum.b;j<=yum.e;j++) {
+        if (v_received[j] < min)
+            min=v_received[j];
+        if (v_received[j] > max)
+            max=v_received[j];
+    }
+
+    std::cout<<" with value "<<(min+max)<<std::endl;
 
     return 0;
 }
