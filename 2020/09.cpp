@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <unordered_set>
 #include <vector>
 
 // Because I'm too lazy to type
@@ -38,12 +37,10 @@ int real_main(int argc, char** argv) {
 
     ull_t in, ans=-1;
 
-    std::unordered_set<ull_t> u_received = {};
     std::vector<ull_t> v_received = {};
 
     for (int i=0;i<pre_size;i++) {
         input>>in;
-        u_received.emplace(in);
         v_received.emplace_back(in);
         if (input.get()!='\n'){
             std::cerr<<"Newline expected..."<<std::endl;
@@ -51,13 +48,15 @@ int real_main(int argc, char** argv) {
         }
     }
 
-    while(input.peek()!=-1) {
-        input>>in;
+    while (input.peek() != -1) {
+        input >> in;
         bool found = false;
-        for (int i=v_received.size()-1;i>=0;i--) {
-            if (u_received.find(in-v_received[i]) != u_received.end()) {
-                found = true;
-                break;
+        for (size_t i = v_received.size() - 1; !found && i + 25 >= v_received.size(); i--) {
+            for (size_t j = i - 1; j + 25 >= v_received.size(); j--) {
+                if (v_received[i] + v_received[j] == in) {
+                    found = true;
+                    break;
+                }
             }
         }
         if (!found) {
@@ -66,8 +65,9 @@ int real_main(int argc, char** argv) {
             // Just assume we do not need the rest of the numbers for part 2 o_0
             break;
         }
+
         v_received.emplace_back(in);
-        u_received.emplace(in);
+
         if (input.get()!='\n'){
             std::cerr<<"Newline expected..."<<std::endl;
             exit(1);
@@ -81,13 +81,13 @@ int real_main(int argc, char** argv) {
 
     input.close();
 
-    cookie yum(0,2,v_received[0]+v_received[1]+v_received[2]);
+    cookie yum(0, 1, v_received[0] + v_received[1]);
 
     while (yum.v != ans) {
         if (yum.v < ans) {
             yum.v += v_received[++yum.e];
         } else {
-            if (yum.e - yum.b <= 2) {
+            if (yum.e - yum.b < 2) {
                 yum.v += v_received[++yum.e] - v_received[yum.b++];
             } else {
                 yum.v -= v_received[yum.b++];
