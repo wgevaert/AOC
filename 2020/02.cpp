@@ -27,9 +27,9 @@ int real_main(int argc, char** argv) {
         std::cout<<"Running in verbosity mode "<<verb_lvl<<std::endl;
     }
 
-    ull_t valids = 0, min,max, checkcount;
+    ull_t valids1 = 0, valids2 = 0, min,max, checkcount, index;
     char check,a;
-    // do things with input.
+
     while(true) {
         input>>min;
 
@@ -66,26 +66,33 @@ int real_main(int argc, char** argv) {
         }
 
         checkcount=0;
+        index = 1;
+        bool found = false;
 
         while((a=input.get())!='\n') {
-            if (a==check)
+            if (a==check) {
                 checkcount++;
+                if (index==min || index==max)
+                    found = !found;
+            }
+            index++;
         }
 
         if (verb_lvl > 0) {
-            std::cout<<"checkcount is "<<checkcount<<std::endl;
+            std::cout<<"checkcount is "<<checkcount<<" and found is "<<(found ? "true":"false")<<std::endl;
         }
 
         if (checkcount >= min && checkcount <= max) {
-            valids++;
+            valids1++;
+        }
+
+        if (found) {
+            valids2++;
         }
     }
-    std::cout<<"Found "<<valids<<" valid passwords"<<std::endl;
-
+    std::cout<<"Found "<<valids1<<' '<<valids2<<" valid passwords"<<std::endl;
 
     input.close();
-
-    // do things without input
 
     return 0;
 }
