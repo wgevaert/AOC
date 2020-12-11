@@ -38,7 +38,7 @@ ull_t give_local_perms(u_t length) {
     }
 
     if (bad_perms > ans) {
-        std::cerr<<"ERROR: "<<bad_perms <<'>'<<ans<<std::endl;exit(1);
+        std::cerr<<"ERROR: "<<bad_perms <<'>'<<ans<<std::endl;
         exit(1);
     }
 
