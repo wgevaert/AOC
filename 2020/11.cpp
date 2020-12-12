@@ -46,7 +46,7 @@ void print(u_t ind, const std::vector<field_elt>& field) {
                 j++;
             }
             j++;
-            std::cout<<(field[index].occupied ? static_cast<char>('0' + field[index].n_cnt[ind]) : 'L');
+            std::cout<<(field[index].occupied ? static_cast<char>('0' + field[index].n_cnt[ind]) : '.');
             index++;
         }
         std::cout<<'\n';
@@ -81,10 +81,10 @@ u_t simulate (const u_t part, const u_t lim, std::vector<field_elt> field)
             }
         }
         ind = 1-ind;
-        if (verb_lvl > 3)
+        if (verb_lvl > 3) {
             print(ind, field);
+        }
     } while(changed);
-
     u_t ans=0;
     for (int i=1;i<field.size();i++)
         if (field[i].occupied)
