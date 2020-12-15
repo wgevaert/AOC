@@ -3,9 +3,9 @@
 #include <chrono>
 
 // Because I'm too lazy to type
-typedef unsigned long long ull_t;
-typedef unsigned u_t;
-typedef long long ll_t;
+typedef uint64_t ull_t;
+typedef uint32_t u_t;
+typedef int64_t ll_t;
 
 unsigned verb_lvl = 0;
 
@@ -38,8 +38,9 @@ int real_main(int argc, char** argv) {
 int main (int argc, char** argv) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    real_main(argc,argv);
+    int result = real_main(argc,argv);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::cout<<"Duration: "<<std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()<<std::endl;
+    return result;
 }

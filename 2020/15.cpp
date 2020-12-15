@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <unordered_map>
 
 // Because I'm too lazy to type
 typedef unsigned long long ull_t;
@@ -70,7 +69,6 @@ int real_main(int argc, char** argv) {
     }
 
     std::cout<<prev_number<<std::endl;
-
 
     return 0;
 }
