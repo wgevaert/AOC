@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <tuple>
 #include <algorithm>
 
 // Because I'm too lazy to type
