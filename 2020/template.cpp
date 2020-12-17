@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <string>
 
 // Because I'm too lazy to type
 typedef uint64_t ull_t;
@@ -8,6 +9,22 @@ typedef uint32_t u_t;
 typedef int64_t ll_t;
 
 unsigned verb_lvl = 0;
+
+void read_or_die(std::string pattern, std::istream& input) {
+    for (auto a:pattern) {
+        if (a != input.get()) {
+            std::string parsed_pattern = "";
+            for (auto b:pattern) {
+                if (b < ' ' || b > 126)
+                    parsed_pattern += '?';
+                else
+                    parsed_pattern += b;
+            }
+            std::cerr<<'\''<<parsed_pattern<<'\''<<" expected"<<std::endl;
+            exit(1);
+        }
+    }
+}
 
 int real_main(int argc, char** argv) {
     if (argc < 2) {
