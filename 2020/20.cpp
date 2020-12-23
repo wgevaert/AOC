@@ -151,6 +151,23 @@ struct solution {
         auto a = get_solution();
         for (auto b:a)std::cout<<b<<std::endl;
     }
+    void do_print() {
+        for (u_t i=0;i<10*size;i++) {
+            if (!(i%10))
+                std::cout<<std::endl;
+            for (u_t j=0;j<10*size;j++) {
+                auto row = i/10;
+                auto col = j/10;
+                if (!(j%10))std::cout<<' ';
+                if (row*size + col < tiles.size()) {
+                    std::cout<<tiles[row*size+col].Tile[i%10][j%10];
+                }
+            }
+            std::cout<<std::endl;
+        }
+        auto a = get_solution();
+        for (auto b:a)std::cout<<b<<std::endl;
+    }
 };
 
 solution solve(
@@ -225,7 +242,7 @@ solution solve(
                     a.second.used = true;
                     if (verb_lvl > 4) {
                         std::cout<<"Hurray it fits!"<<std::endl;
-                        sol.print();
+                        sol.do_print();
                     }
                     break;
                 } else if (verb_lvl > 4) {
@@ -258,7 +275,7 @@ auto find_monsters(std::vector<std::string>& field) {
                 }
                 monster_cnt++;
                 if (verb_lvl > 8) {
-                    std::cout<<"Found a monster!"<<std::endl;
+                    std::cout<<"\n\nFound a monster!"<<std::endl;
                     for (auto a: field)std::cout<<a<<std::endl;
                 }
             }
@@ -392,12 +409,36 @@ int real_main(int argc, char** argv) {
         }
     }
 
+    if (verb_lvl > 0) {
+        std::ofstream image1("20_monsters.pgm");
+
+        if(!image1.good()){std::cout<<"20."<<id<<".pbm is bad"<<std::endl;exit(1);}
+        image1 <<"P2 "<<96<<' '<<96<<'\n'<<2<<std::endl;
+
+        for (auto a:field)
+            for (auto b:a)
+                switch(b) {
+                    case '#':
+                        image1<<0<<' ';
+                        break;
+                    case '.':
+                        image1<<1<<' ';
+                        break;
+                    case 'O':
+                        image1<<2<<' ';
+                        break;
+                }
+
+        image1.close();
+    }
+
     uint32_t ans2=0;
+
     for (auto a: field)
         for (auto b:a)
             if (b=='#')
                 ans2++;
-    std::cout<<ans2<<std::endl;
+    std::cout << ans2 << std::endl;
 
     return 0;
 }
