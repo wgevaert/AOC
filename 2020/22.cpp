@@ -35,6 +35,7 @@ struct card {
 struct deck {
     card *first = NULL, *last = NULL;
     uint32_t size = 0;
+
     void push_back(card* c) {
         if (last == NULL) {
             last = first = c;
@@ -44,6 +45,7 @@ struct deck {
         }
         size++;
     }
+
     card* pop_front() {
         card* ans = first;
         first = first->prev;
@@ -53,64 +55,38 @@ struct deck {
         size--;
         return ans;
     }
+
     void clear() {
         while (first != NULL) delete pop_front();
     }
-    deck(deck& d) {
+
+    void copy_from(deck& d, uint32_t s) {
+        if (d.size < s) {
+            std::cerr<<"Cannot copy "<<s<<" elements from list of size "<<d.size<<std::endl;
+            exit(1);
+        }
         clear();
         card*c=d.first;
-        while (c != NULL) {
+        for (uint32_t i=0;i<s;i++) {
             this->push_back(new card(c->number));
             c = c->prev;
         }
     }
+
+    deck(deck& d) {
+        copy_from(d, d.size);
+    }
+
     deck& operator=(deck& d) {
         if (this != &d) {
-            clear();
-            card*c=d.first;
-            while (c != NULL) {
-                this->push_back(new card(c->number));
-                c = c->prev;
-            }
+            copy_from(d, d.size);
         }
         return *this;
     }
+
     deck(){};
+
     ~deck(){clear();};
-
-    void resize(uint32_t s) {
-        if (s>size) {
-            std::cerr<<"Cannot resize to "<<s<<" when only size "<<size<<std::endl;
-            exit(1);
-        }
-        if (s==size)
-            return;
-        card* c=first,*d;
-        for (uint32_t i=1;i<s;i++)
-            c = c->prev;
-        last = c;
-        last->prev = NULL;
-        c = c->prev;
-        while (c != NULL) {
-            d = c;
-            c = c->prev;
-            delete d;
-        }
-        size = s;
-    }
-
-    void check_size() {
-        uint32_t s=0;
-        card* c=first;
-        while (c!=NULL) {
-            s++;
-            c = c->prev;
-        }
-        if (s != size) {
-            std::cerr<<"Expected size "<<size<<" does not match actual size "<<s<<std::endl;
-            exit(1);
-        }
-    }
 
     bool operator==(deck& d) {
         card *c=d.first, *o=first;
@@ -184,24 +160,10 @@ uint32_t play_game(deck& d1, deck&d2, bool recursive) {
         card* c1 = d1.pop_front(), *c2 = d2.pop_front();
 
         if (recursive && c1->number <= d1.size && c2->number <= d2.size) {
-            deck o1=d1,o2=d2;
+            deck o1,o2;
 
-            o1.resize(c1->number);
-            if (verb_lvl > 0) {
-                std::cout<<"o1 after resize to size "<<c1->number<<":\n";
-                for (card* c=o1.first;c!=NULL;c=c->prev) {
-                    std::cout<<c->number<<' ';
-                }std::cout<<std::endl;
-            }
-            o2.resize(c2->number);
-            o1.check_size();
-            o2.check_size();
-            if (verb_lvl > 0) {
-                std::cout<<"o2 after resize to size "<<c2->number<<":\n";
-                for (card* c=o2.first;c!=NULL;c=c->prev) {
-                    std::cout<<c->number<<' ';
-                }std::cout<<std::endl;
-            }
+            o1.copy_from(d1, c1->number);
+            o2.copy_from(d2, c2->number);
 
             switch (play_game(o1, o2, true)) {
                 case 1:
