@@ -2,7 +2,7 @@
 #include <fstream>
 #include <chrono>
 #include <string>
-#include <unordered_map>
+#include <array>
 
 // Because I'm too lazy to type
 typedef uint64_t ull_t;
@@ -48,7 +48,7 @@ pos_t& operator+=(pos_t& a, pos_t b){a.a+=b.a;a.b+=b.b;return a;}
 
 int real_main(int argc, char** argv) {
     if (argc < 2) {
-        std::cerr<<"Usage: "<<argv[0]<<" [-v {verbosity_level}] {input_file}"<<std::endl;
+        std::cerr<<"Usage: "<<argv[0]<<" [-v {verbosity_level}] [{a_min} {a_max} {b_min} {b_max}] {input_file}"<<std::endl;
         exit(1);
     }
     verb_lvl = argc > 3 && argv[1][0] == '-' && argv[1][1] == 'v' ? std::stoul(argv[2]) : 0;
@@ -64,10 +64,17 @@ int real_main(int argc, char** argv) {
         std::cout<<"Running in verbosity mode "<<verb_lvl<<std::endl;
     }
 
-    const int32_t mid = 1024;
+    const int32_t mid = 128;
     static bool field[2][2*mid+1][2*mid+1];
 
     pos_t ul={mid,mid},br={mid,mid}; // upper left and bottom right
+
+    if (argc > 6) {
+        br.b = std::stoi(argv[argc-2]);
+        ul.b = std::stoi(argv[argc-3]);
+        br.a = std::stoi(argv[argc-4]);
+        ul.a = std::stoi(argv[argc-5]);
+    }
 
     while (input.peek() != -1) {
         pos_t pos = {0,0};
@@ -151,14 +158,36 @@ int real_main(int argc, char** argv) {
                 }
             }
         if (verb_lvl > 5) {
-            std::cout<<i<<':'<<std::endl;
-            for (int a=ul.a;a<=br.a;a++) {
-                for (int b=ul.b;b<=br.b;b++)
-                    std::cout<<(field[1-(i%2)][a][b] ? '#' : '.');
-                std::cout<<std::endl;
+            if (argc > 6) {
+                std::string filename = std::to_string(i+1);
+                filename = "24_imgs/24-" + std::string(4-filename.size(),'0') + filename + ".pgm";
+                std::ofstream image(filename);
+                if (!image.good()) {
+                    std::cerr<<"Image "<<filename<<"could not be opened"<<std::endl;
+                    exit(1);
+                }
+                image<<"P2 "<<' '<<br.a-ul.a+2*(br.b-ul.b+1)<<' '<<(br.a-ul.a+1)<<' '<<3<<std::endl;
+                for (int a=ul.a;a<=br.a;a++) {
+                    for(int i=0;i<a-ul.a;i++)image<<1<<' ';
+                    for (int b=ul.b;b<=br.b;b++)
+                        image<<(field[1-(i%2)][a][b] ? 2 : ( a+b>=mid + ul.a -3 && a+b<=mid+br.a? 0 : 1))<<' '<<1<<' ';
+                    for(int i=0;i<br.a-a;i++)image<<1<<' ';
+                }
+            } else {
+                std::cout<<i<<':'<<std::endl;
+                for (int a=ul.a;a<=br.a;a++) {
+                    for(int i=0;i<a-ul.a;i++)std::cout<<" ";
+                    for (int b=ul.b;b<=br.b;b++)
+                        std::cout<<(field[1-(i%2)][a][b] ? '@' : ( a+b>=mid + ul.a -3 && a+b<=mid+br.a? '.' : ' '))<<' ';
+                    for(int i=0;i<br.a-a;i++)std::cout<<" ";
+                    std::cout<<std::endl;
+                }
             }
         }
     }
+
+    if (verb_lvl > 3)
+        std::cout<<"finally we have a between "<<ul.a<<','<<br.a<<" and b between "<<ul.b<<','<<br.b<<std::endl;
 
     uint32_t ans2=0;
     for(int a=0;a<=2*mid;a++)
