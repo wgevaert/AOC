@@ -119,11 +119,12 @@ uint32_t play_game(deck& d1, deck&d2, bool recursive) {
     static uint32_t depth = 0;
     depth++;
     deck control1, control2;
-    uint32_t window=1, step=1;
+    uint32_t window=1, step=1, winner=1;
+
     while (d1.size && d2.size) {
         if (window == step) {
-            control1=d1;
-            control2=d2;
+            control1 = d1;
+            control2 = d2;
             window <<= 1;
         }
         if (verb_lvl > 0 && depth < verb_lvl && recursive) {
@@ -165,22 +166,21 @@ uint32_t play_game(deck& d1, deck&d2, bool recursive) {
             o1.copy_from(d1, c1->number);
             o2.copy_from(d2, c2->number);
 
-            switch (play_game(o1, o2, true)) {
-                case 1:
-                    d1.push_back(c1);
-                    d1.push_back(c2);
-                    break;
-                case 2:
-                    d2.push_back(c2);
-                    d2.push_back(c1);
-                    break;
-            }
+            winner = play_game(o1, o2, true);
         } else if (c1->number > c2->number) {
-            d1.push_back(c1);
-            d1.push_back(c2);
+            winner = 1;
         } else {
-            d2.push_back(c2);
-            d2.push_back(c1);
+            winner = 2;
+        }
+        switch (winner) {
+            case 1:
+                d1.push_back(c1);
+                d1.push_back(c2);
+                break;
+            case 2:
+                d2.push_back(c2);
+                d2.push_back(c1);
+                break;
         }
 
         if (d1 == control1 && d2 == control2) {
@@ -191,14 +191,9 @@ uint32_t play_game(deck& d1, deck&d2, bool recursive) {
         }
         step++;
     }
-    if (d1.size && d2.size) {
-        std::cerr<<"WHOOPS"<<std::endl;
-        exit(1);
-    }
+
     depth--;
-    if (d1.size)
-        return 1;
-    return 2;
+    return winner;
 }
 
 int real_main(int argc, char** argv) {
@@ -251,11 +246,21 @@ int real_main(int argc, char** argv) {
     D1=d1;
     D2=d2;
 
-    play_game(d1, d2, false);
-    play_game(D1, D2, true);
-
-    std::cout<<std::max(calc_score(d1),calc_score(d2))<<std::endl;
-    std::cout<<std::max(calc_score(D1),calc_score(D2))<<std::endl;
+    switch(play_game(d1, d2, false)) {
+        case 1:
+            std::cout<<calc_score(d1)<<std::endl;;
+            break;
+        case 2:
+            std::cout<<calc_score(d2)<<std::endl;
+            break;
+    }
+    switch(play_game(D1, D2, true)) {
+        case 1:
+            std::cout<<calc_score(D1)<<std::endl;
+            break;
+        case 2:
+            std::cout<<calc_score(D2)<<std::endl;
+    }
 
     return 0;
 }

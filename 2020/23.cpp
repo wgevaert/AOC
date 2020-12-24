@@ -144,6 +144,7 @@ int real_main(int argc, char** argv) {
 
     std::cout<<"\n";
     circ_elt * i=units[1]->prev;
+
     do {
         std::cout<<i->val;
         i=i->prev;
