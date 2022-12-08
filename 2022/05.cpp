@@ -11,7 +11,7 @@ typedef uint32_t u_t;
 typedef int64_t ll_t;
 
 unsigned verb_lvl = 0;
-bool part2=true;//change for part 1;
+bool part2=false;//change for part 1;
 
 void read_or_die(std::string pattern, std::istream& input) {
     for (auto a:pattern) {
@@ -77,7 +77,7 @@ std::string in;
         }
     }
 
-    for (u_t i=0;i<9;i++){for(auto a:stacks[i])std::cout<<a<<' ';std::cout<<std::endl;}
+    for (u_t i=0;i<9;i++)std::cout<<stacks[i].back();std::cout<<std::endl;
 
     input.close();
 
