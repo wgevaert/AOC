@@ -1,0 +1,910 @@
+inp w
+w=in1,x=0,y=0,z=0
+mul x 0
+w=in1,x=0,y=0,z=0
+add x z
+w=in1,x=0,y=0,z=0
+mod x 26
+w=in1,x=0,y=0,z=0
+div z 1
+w=in1,x=0,y=0,z=0
+add x 12
+w=in1,x=12,y=0,z=0
+eql x w
+w=in1,x=0,y=0,z=0
+eql x 0
+w=in1,x=1,y=0,z=0
+mul y 0
+w=in1,x=1,y=0,z=0
+add y 25
+w=in1,x=1,y=25,z=0
+mul y x
+w=in1,x=1,y=25,z=0
+add y 1
+w=in1,x=1,y=26,z=0
+mul z y
+w=in1,x=1,y=26,z=0
+mul y 0
+w=in1,x=1,y=0,z=0
+add y w
+w=in1,x=1,y=in1,z=0
+add y 6
+w=in1,x=1,y=in1+6,z=0
+mul y x
+w=in1,x=1,y=in1+6,z=0
+add z y
+w=in1,x=1,y=in1+6,z=in1+6
+inp w
+w=in2,x=1,y=in1+6,z=in1+6
+mul x 0
+w=in2,x=0,y=in1+6,z=in1+6
+add x z
+w=in2,x=in1+6,y=in1+6,z=in1+6
+mod x 26
+w=in2,x=in1+6,y=in1+6,z=in1+6
+div z 1
+w=in2,x=in1+6,y=in1+6,z=in1+6
+add x 10
+w=in2,x=in1+16,y=in1+6,z=in1+6
+eql x w
+w=in2,x=0,y=in1+6,z=in1+6
+eql x 0
+w=in2,x=1,y=in1+6,z=in1+6
+mul y 0
+w=in2,x=1,y=0,z=in1+6
+add y 25
+w=in2,x=1,y=25,z=in1+6
+mul y x
+w=in2,x=1,y=25,z=in1+6
+add y 1
+w=in2,x=1,y=26,z=in1+6
+mul z y
+w=in2,x=1,y=26,z=26*(in1+6)
+mul y 0
+w=in2,x=1,y=0,z=26*(in1+6)
+add y w
+w=in2,x=1,y=in2,z=26*(in1+6)
+add y 6
+w=in2,x=1,y=in2+6,z=26*(in1+6)
+mul y x
+w=in2,x=1,y=in2+6,z=26*(in1+6)
+add z y
+w=in2,x=1,y=in2+6,z=26*(in1+6)+in2+6
+inp w
+w=in3,x=1,y=in2+6,z=26*(in1+6)+in2+6
+mul x 0
+w=in3,x=0,y=in2+6,z=26*(in1+6)+in2+6
+add x z
+w=in3,x=26*(in1+6)+in2+6,y=in2+6,z=26*(in1+6)+in2+6
+mod x 26
+w=in3,x=in2+6,y=in2+6,z=26*(in1+6)+in2+6
+div z 1
+w=in3,x=in2+19,y=in2+6,z=26*(in1+6)+in2+6
+add x 13
+w=in3,x=in2+19,y=in2+6,z=26*(in1+6)+in2+6
+eql x w
+w=in3,x=0,y=in2+6,z=26*(in1+6)+in2+6
+eql x 0
+w=in3,x=1,y=in2+6,z=26*(in1+6)+in2+6
+mul y 0
+w=in3,x=1,y=0,z=26*(in1+6)+in2+6
+add y 25
+w=in3,x=1,y=25,z=26*(in1+6)+in2+6
+mul y x
+w=in3,x=1,y=25,z=26*(in1+6)+in2+6
+add y 1
+w=in3,x=1,y=26,z=26*(in1+6)+in2+6
+mul z y
+w=in3,x=1,y=26,z=26*(26*(in1+6)+in2+6)
+mul y 0
+w=in3,x=1,y=0,z=26*(26*(in1+6)+in2+6)
+add y w
+w=in3,x=1,y=in3,z=26*(26*(in1+6)+in2+6)
+add y 3
+w=in3,x=1,y=in3+3,z=26*(26*(in1+6)+in2+6)
+mul y x
+w=in3,x=1,y=in3+3,z=26*(26*(in1+6)+in2+6)
+add z y
+w=in3,x=1,y=in3+3,z=26*(26*(in1+6)+in2+6)+in3+3
+inp w
+w=in4,x=1,y=in3+3,z=26*(26*(in1+6)+in2+6)+in3+3
+mul x 0
+w=in4,x=0,y=in3+3,z=26*(26*(in1+6)+in2+6)+in3+3
+add x z
+w=in4,x=26*(26*(in1+6)+in2+6)+in3+3,y=in3+3,z=26*(26*(in1+6)+in2+6)+in3+3
+mod x 26
+w=in4,x=in3+3,y=in3+3,z=26*(26*(in1+6)+in2+6)+in3+3
+div z 26
+w=in4,x=in3+3,y=in3+3,z=26*(in1+6)+in2+6
+add x -11
+w=in4,x=in3-8,y=in3+3,z=26*(in1+6)+in2+6
+eql x w
+if (in3==in4+8){
+    w=in4,x=1,y=in3+3,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=0,y=in3+3,z=26*(in1+6)+in2+6
+}
+eql x 0
+if (in3==in4+8){
+    w=in4,x=0,y=in3+3,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=in3+3,z=26*(in1+6)+in2+6
+}
+mul y 0
+if (in3==in4+8){
+    w=in4,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=0,z=26*(in1+6)+in2+6
+}
+add y 25
+if (in3==in4+8){
+    w=in4,x=0,y=25,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=25,z=26*(in1+6)+in2+6
+}
+mul y x
+if (in3==in4+8){
+    w=in4,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=25,z=26*(in1+6)+in2+6
+}
+add y 1
+if (in3==in4+8){
+    w=in4,x=0,y=1,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=26,z=26*(in1+6)+in2+6
+}
+mul z y
+if (in3==in4+8){
+    w=in4,x=0,y=1,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=26,z=26*(26*(in1+6)+in2+6)
+}
+mul y 0
+if (in3==in4+8){
+    w=in4,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=0,z=26*(26*(in1+6)+in2+6)
+}
+add y w
+if (in3==in4+8){
+    w=in4,x=0,y=in4,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=in4,z=26*(26*(in1+6)+in2+6)
+}
+add y 11
+if (in3==in4+8){
+    w=in4,x=0,y=in4+11,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=in4+11,z=26*(26*(in1+6)+in2+6)
+}
+mul y x
+if (in3==in4+8){
+    w=in4,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=in4+11,z=26*(26*(in1+6)+in2+6)
+}
+add z y
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in4,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in4,x=1,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+inp w
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+mul x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=0,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+add x z
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=26*(in1+6)+in2+6,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=26*(26*(in1+6)+in2+6)+in4+11,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+mod x 26
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=in2+6,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=in4+11,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+div z 1
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=in2+6,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=in4+11,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+add x 13
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=in2+19,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=in4+23,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+eql x w
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=0,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=0,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+eql x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=in4+11,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+mul y 0
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=0,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=0,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+add y 25
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=25,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=25,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+mul y x
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=25,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=25,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+add y 1
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=26,z=26*(in1+6)+in2+6
+} else {
+    w=in5,x=1,y=26,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+mul z y
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=26,z=26*(26*(in1+6)+in2+6)
+} else {
+    w=in5,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+}
+mul y 0
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=0,z=26*(26*(in1+6)+in2+6)
+} else {
+    w=in5,x=1,y=0,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+}
+add y w
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=in5,z=26*(26*(in1+6)+in2+6)
+} else {
+    w=in5,x=1,y=in5,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+}
+add y 9
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)
+} else {
+    w=in5,x=1,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+}
+mul y x
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)
+} else {
+    w=in5,x=1,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+}
+add z y
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in5,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)+in5+9
+} else {
+    w=in5,x=1,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9
+}
+inp w
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)+in5+9
+} else {
+    w=in6,x=1,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9
+}
+mul x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=0,y=in5+9,z=26*(26*(in1+6)+in2+6)+in5+9
+} else {
+    w=in6,x=0,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9
+}
+add x z
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=26*(26*(in1+6)+in2+6)+in5+9,y=in5+9,z=26*(26*(in1+6)+in2+6)+in5+9
+} else {
+    w=in6,x=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9
+}
+mod x 26
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=in5+9,y=in5+9,z=26*(26*(in1+6)+in2+6)+in5+9
+} else {
+    w=in6,x=in5+9,y=in5+9,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in5+9
+}
+div z 26
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=in5+9,y=in5+9,z=26*(in1+6)+in2+6
+} else {
+    w=in6,x=in5+9,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+add x -1
+if (in3==in4+8) { // in4==9 && in3==1
+    w=in6,x=in5+8,y=in5+9,z=26*(in1+6)+in2+6
+} else {
+    w=in6,x=in5+8,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+}
+eql x w
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=1,y=in5+9,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=0,y=in5+9,z=26*(in1+6)+in2+6
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=0,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+    }
+}
+eql x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=in5+9,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=1,y=in5+9,z=26*(in1+6)+in2+6
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=1,y=in5+9,z=26*(26*(in1+6)+in2+6)+in4+11
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=1,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=1,y=26,z=26*(in1+6)+in2+6
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=1,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=1,y=26,z=26*(26*(in1+6)+in2+6)+in4+11
+    }
+}
+mul z y
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=1,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=1,y=26,z=26*(26*(in1+6)+in2+6)
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=1,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+    }
+}
+mul y 0
+add y w
+add y 3
+mul y x
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=0,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=1,y=in6+3,z=26*(26*(in1+6)+in2+6)
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=0,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=1,y=in6+3,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+    }
+}
+add z y
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=0,z=26*(in1+6)+in2+6
+    } else {
+        w=in6,x=1,y=in6+3,z=26*(26*(in1+6)+in2+6)+in6+3
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in6,x=0,y=0,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in6,x=1,y=in6+3,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3
+    }
+}
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=in2+16,y=0,z=26*(in1+6)+in2+6
+    } else {
+        w=in7,x=in6+13,y=in6+3,z=26*(26*(in1+6)+in2+6)+in6+3
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=in4+in6+24,y=0,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in7,x=in6+13,y=in6+3,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3
+    }
+}
+eql x w
+eql x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=1,y=0,z=26*(in1+6)+in2+6
+    } else {
+        w=in7,x=1,y=in6+3,z=26*(26*(in1+6)+in2+6)+in6+3
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=1,y=0,z=26*(26*(in1+6)+in2+6)+in4+11
+    } else {
+        w=in7,x=1,y=in6+3,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=1,y=26,z=26*(26*(in1+6)+in2+6)
+    } else {
+        w=in7,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in6+3)
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in7,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)
+    } else {
+        w=in7,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)
+    }
+}
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+inp w
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*(26*(in1+6)+in2+6)+in7+13
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+    }
+}
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=in7+24,y=26,z=26*(26*(in1+6)+in2+6)+in7+13
+    } else {
+        w=in8,x=in7+24,y=26,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=in7+24,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+    } else {
+        w=in8,x=in7+24,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+    }
+}
+eql x w
+eql x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*(26*(in1+6)+in2+6)+in7+13
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in7+13)
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in8,x=1,y=26,z=26*26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13)
+    } else {
+        w=in8,x=1,y=26,z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)
+    }
+}
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+inp w
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in9,x=1,y=in8+6,z=26*(26*(26*(in1+6)+in2+6)+in7+13)+in8+6
+    } else {
+        w=in9,x=1,y=in8+6,z=26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)+in8+6
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in9,x=1,y=in8+6,z=26*26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13)+in8+6
+    } else {
+        w=in9,x=1,y=in8+6,z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)+in8+6
+    }
+}
+mul x 0
+add x z
+mod x 26
+div z 26
+add x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in9,x=in8+6,y=in8+6,z=26*(26*(in1+6)+in2+6)+in7+13
+    } else {
+        w=in9,x=in8+6,y=in8+6,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        w=in9,x=in8+6,y=in8+6,z=26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+    } else {
+        w=in9,x=in8+6,y=in8+6,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+    }
+}
+eql x w
+eql x 0
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in9,x=0,y=in8+6,z=26*(26*(in1+6)+in2+6)+in7+13
+        } else {
+            w=in9,x=1,y=in8+6,z=26*(26*(in1+6)+in2+6)+in7+13
+        }
+    } else {
+        if (in9 == in8+6) {
+            w=in9,x=0,y=in8+6,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+        } else {
+            w=in9,x=1,y=in8+6,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+        }
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in9,x=0,y=in8+6,z=26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+        } else {
+            w=in9,x=1,y=in8+6,z=26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+        }
+    } else {
+        if (in9 == in8 + 6) {
+            w=in9,x=0,y=in8+6,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+        } else {
+            w=in9,x=1,y=in8+6,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+        }
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 14
+mul y x
+add z y
+inp w
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in10,x=0,y=0,z=26*(26*(in1+6)+in2+6)+in7+13
+        } else {
+            w=in10,x=1,y=in9+14,z=26*(26*(26*(in1+6)+in2+6)+in7+13)+in9+14
+        }
+    } else {
+        if (in9 == in8+6) {
+            w=in10,x=0,y=0,z=26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+        } else {
+            w=in10,x=1,y=in9+14,z=26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)+in9+14
+        }
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in10,x=0,y=0,z=26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+        } else {
+            w=in10,x=1,y=in9+14,z=26*(26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13)+in9+14
+        }
+    } else {
+        if (in9 == in8 + 6) {
+            w=in10,x=0,y=0,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+        } else {
+            w=in10,x=1,y=in9+14,z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)+in9+14
+        }
+    }
+}
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in10,x=1,y=26,z=26*(26*(26*(in1+6)+in2+6)+in7+13)
+        } else {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in7+13)+in9+14)
+        }
+    } else {
+        if (in9 == in8+6) {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)
+        } else {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)+in9+14)
+        }
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13)
+        } else {
+            w=in10,x=1,y=26,z=26*(26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13)+in9+14)
+        }
+    } else {
+        if (in9 == in8 + 6) {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)
+        } else {
+            w=in10,x=1,y=26,z=26*(26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)+in9+14)
+        }
+    }
+}
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -5
+w=in11,x=in10+5,y=in10+10
+if (in3==in4+8) { // in4==9 && in3==1
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            z=26*(26*(in1+6)+in2+6)+in7+13
+        } else {
+            z=26*(26*(26*(26*(in1+6)+in2+6)+in7+13)+in9+14
+        }
+    } else {
+        if (in9 == in8+6) {
+            z=26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13
+        } else {
+            z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in6+3)+in7+13)+in9+14
+        }
+    }
+} else {
+    if (in6 == in5 + 8) { // in6==9 && in5==1
+        if (in9 == in8+6) {
+            z=26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in7+13
+        } else {
+            z=26*(26*26*(26*(in1+6)+in2+6)+in4+11)+in7+13)+in9+14
+        }
+    } else {
+        if (in9 == in8 + 6) {
+            z=26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13
+        } else {
+            z=26*(26*(26*(26*(26*(26*(in1+6)+in2+6)+in4+11)+in6+3)+in7+13)+in9+14
+        }
+    }
+}
+eql x w
+eql x 0
+// Because there's few div z 26 statements ahead, we ignore the branches that have too big a z value
+if (in11==in10+5) {
+    w=in11,x=0,y=in10+10
+    if (in3==in4+8) { // in4==9 && in3==1
+        if (in6 == in5 + 8) { // in6==9 && in5==1
+            if (in9 == in8+6) {
+                z=26*(26*(in1+6)+in2+6)+in7+13
+            }
+        }
+    }
+} else {
+    w=in11,x=1,y=in10+10
+    if (in3==in4+8) { // in4==9 && in3==1
+        if (in6 == in5 + 8) { // in6==9 && in5==1
+            if (in9 == in8+6) {
+                z=26*(26*(in1+6)+in2+6)+in7+13
+            }
+        }
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+if (in11==in10+5) {
+    w=in11,x=0,y=1
+    if (in3==in4+8) { // in4==9 && in3==1
+        if (in6 == in5 + 8) { // in6==9 && in5==1
+            if (in9 == in8+6) {
+                z=26*(26*(in1+6)+in2+6)+in7+13
+            }
+        }
+    }
+}
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+if (in11==in10+5) {
+    w=in12,x=in7+13,y=1
+    if (in3==in4+8) { // in4==9 && in3==1
+        if (in6 == in5 + 8) { // in6==9 && in5==1
+            if (in9 == in8+6) {
+                z=26*(in1+6)+in2+6
+            }
+        }
+    }
+}
+add x -16
+if (in11==in10+5) {
+    w=in12,x=in7-3,y=1
+    if (in3==in4+8) { // in4==9 && in3==1
+        if (in6 == in5 + 8) { // in6==9 && in5==1
+            if (in9 == in8+6) {
+                z=26*(in1+6)+in2+6
+            }
+        }
+    }
+}
+eql x w
+eql x 0
+if (in7==in12+3) {
+    if (in11==in10+5) {
+        w=in12,x=0,y=1
+        if (in3==in4+8) { // in4==9 && in3==1
+            if (in6 == in5 + 8) { // in6==9 && in5==1
+                if (in9 == in8+6) {
+                    z=26*(in1+6)+in2+6
+                }
+            }
+        }
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+if (in7==in12+3) {
+    if (in11==in10+5) {
+        w=in13,x=in2-1,y=0
+        if (in3==in4+8) { // in4==9 && in3==1
+            if (in6 == in5 + 8) { // in6==9 && in5==1
+                if (in9 == in8+6) {
+                    z=in1+6
+                }
+            }
+        }
+    }
+}
+eql x w
+eql x 0
+if (in2 == in13+1) {
+    if (in7==in12+3) {
+        if (in11==in10+5) {
+            w=in13,x=0,y=0
+            if (in3==in4+8) { // in4==9 && in3==1
+                if (in6 == in5 + 8) { // in6==9 && in5==1
+                    if (in9 == in8+6) {
+                        z=in1+6
+                }
+            }
+        }
+    }
+}
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -11
+// We can deduce the answers from the code below:
+// ans1: 99911993949684
+// ans2: 62911941716111
+if (in1==in14+5) {
+    if (in2 == in13+1) {
+        if (in7==in12+3) {
+            if (in11==in10+5) {
+                w=in14,x=0,y=0
+                if (in3==in4+8) { // in4==9 && in3==1
+                    if (in6 == in5 + 8) { // in6==9 && in5==1
+                        if (in9 == in8+6) {
+                            z=0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
