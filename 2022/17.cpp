@@ -49,11 +49,12 @@ void read_or_die(std::string pattern, std::istream& input) {
 *********************/
 
 const u_t h[5] = {1,3,3,4,2};
+const char empty = ' ';
 
 class row {
 public:
     char r[7];
-    row() {for(u_t i=0;i<7;i++)r[i]='.';}
+    row() {for(u_t i=0;i<7;i++)r[i]=empty;}
     char operator[] (const int i) const {
         if (i<0||i>=7)return '|';return r[i];
     }
@@ -64,11 +65,11 @@ const bool can_move_down(const u_t piece, const ull_t y, const short x, const st
         return false;
     }
     switch (piece) {
-        case 0:return field[y-1][x]=='.'&&field[y-1][x+1]=='.'&&field[y-1][x+2]=='.'&&field[y-1][x+3]=='.';
-        case 1:return field[y][x]=='.'&&field[y-1][x+1]=='.'&&field[y][x+2]=='.';
-        case 2:return field[y-1][x]=='.'&&field[y-1][x+1]=='.'&&field[y-1][x+2]=='.';
-        case 3:return field[y-1][x]=='.';
-        case 4:return field[y-1][x]=='.'&&field[y-1][x+1]=='.';
+        case 0:return field[y-1][x]==empty&&field[y-1][x+1]==empty&&field[y-1][x+2]==empty&&field[y-1][x+3]==empty;
+        case 1:return field[y][x]==empty&&field[y-1][x+1]==empty&&field[y][x+2]==empty;
+        case 2:return field[y-1][x]==empty&&field[y-1][x+1]==empty&&field[y-1][x+2]==empty;
+        case 3:return field[y-1][x]==empty;
+        case 4:return field[y-1][x]==empty&&field[y-1][x+1]==empty;
     }
     return false;
 }
@@ -120,11 +121,11 @@ const bool can_move_left(const u_t piece, const ull_t y, const short x, const st
         std::cerr<<"WHOOPS!l"<<std::endl;exit(1);
     }
     switch (piece) {
-        case 0:return field[y][x-1]=='.';
-        case 1:return field[y][x]=='.'&&field[y+1][x-1]=='.'&&field[y+2][x]=='.';
-        case 2:return field[y][x-1]=='.'&&field[y+1][x+1]=='.'&&field[y+2][x+1]=='.';
-        case 3:return field[y][x-1]=='.'&&field[y+1][x-1]=='.'&&field[y+2][x-1]=='.'&&field[y+3][x-1]=='.';
-        case 4:return field[y][x-1]=='.'&&field[y+1][x-1]=='.';
+        case 0:return field[y][x-1]==empty;
+        case 1:return field[y][x]==empty&&field[y+1][x-1]==empty&&field[y+2][x]==empty;
+        case 2:return field[y][x-1]==empty&&field[y+1][x+1]==empty&&field[y+2][x+1]==empty;
+        case 3:return field[y][x-1]==empty&&field[y+1][x-1]==empty&&field[y+2][x-1]==empty&&field[y+3][x-1]==empty;
+        case 4:return field[y][x-1]==empty&&field[y+1][x-1]==empty;
     }
     return false;
 }
@@ -134,13 +135,33 @@ const bool can_move_right(const u_t piece, const ull_t y, const short x, const s
         std::cerr<<"WHOOPS!r"<<std::endl;exit(1);
     }
     switch (piece) {
-        case 0:return field[y][x+4]=='.';
-        case 1:return field[y][x+2]=='.'&&field[y+1][x+3]=='.'&&field[y+2][x+2]=='.';
-        case 2:return field[y][x+3]=='.'&&field[y+1][x+3]=='.'&&field[y+2][x+3]=='.';
-        case 3:return field[y][x+1]=='.'&&field[y+1][x+1]=='.'&&field[y+2][x+1]=='.'&&field[y+3][x+1]=='.';
-        case 4:return field[y][x+2]=='.'&&field[y+1][x+2]=='.';
+        case 0:return field[y][x+4]==empty;
+        case 1:return field[y][x+2]==empty&&field[y+1][x+3]==empty&&field[y+2][x+2]==empty;
+        case 2:return field[y][x+3]==empty&&field[y+1][x+3]==empty&&field[y+2][x+3]==empty;
+        case 3:return field[y][x+1]==empty&&field[y+1][x+1]==empty&&field[y+2][x+1]==empty&&field[y+3][x+1]==empty;
+        case 4:return field[y][x+2]==empty&&field[y+1][x+2]==empty;
     }
     return false;
+}
+
+char piece_coloring(u_t piece) {
+    switch (piece) {
+        case 0: return '_';
+        case 1: return '+';
+        case 2: return 'J';
+        case 3: return 'I';
+        case 4: return 'H';
+    }
+    return '?';
+}
+
+void print_field(std::vector<row>& field) {
+    for (auto a=field.rbegin();a!=field.rend();a++){
+        std::cout<<'|';
+        for (auto b:a->r)std::cout<<b;
+        std::cout<<"|\n";
+    }
+    std::cout<<"+-------+\n"<<std::endl;
 }
 
 int real_main(int argc, char** argv) {
@@ -169,31 +190,51 @@ int real_main(int argc, char** argv) {
     }
     input.close();
 
-    ull_t period = 1;// 756-413;// To solve puzzle: Set period = 1, look at output, manually find period, set period to that value, then run program again.
+    const ull_t safety_number = 15;
 
-    ull_t cur_jet = 0, y_max=0, prev=0, mod = to_left.size()*period, prev_diff=-1, tries=0;
-    if (to_left.size()%5) mod*=5;
-
-    if (to_left.size()<100){mod=to_left.size()*7;} // The test case
+    ull_t cur_jet = 0, y_max=0, prev=0, mod = to_left.size(), prev_diff=-1, tries=0, i_at_2sn, ym_at_2sn;
+    if (to_left.size()%5) mod*=5;// Basically mod = scm(to_left.size(), 5), the smallest possible period.
 
     std::vector<row>field = {};
+    std::vector<ull_t> diffs = {};
 
     // 1 000 000 000 000 that's a lot
     bool legend=true;
-    for (ull_t i=0;i<1000000000000;i++) { //Basically an infinite loop
+    bool found_period = false;
+    for (ull_t i=0;i<1000000000000;i++) { // Basically an infinite loop
 
-        if (period!=1&&i==2022)std::cout<<"Answer 1: "<<y_max<<std::endl;
+        if (i==2022)std::cout<<"Answer 1: "<<y_max<<std::endl;
 
         if ((i%mod)==(1000000000000%mod)){
-            if (period!=1&&prev_diff==y_max-prev) {
-                std::cout<<"Answer 2: "<<(y_max+prev_diff*((1000000000000-i)/mod))<<std::endl;
-                legend = false;
-                break;
-            }
-            if (period==1) {
-                std::cout<<y_max-prev<<std::endl;
-            } else if (tries > 3) {
-                std::cerr<<"It seems the period you provided is not an actual period. Please reset period to 1 and retry finding period"<<std::endl;exit(1);
+            if (!found_period && prev!=0)
+                diffs.emplace_back(y_max - prev);
+            if (found_period) {
+                if (y_max - prev == prev_diff) {
+                    std::cout<<"Answer 2: "<<(y_max+prev_diff*((1000000000000-i)/mod))
+                             <<std::endl;
+                    legend = false;
+                    break;
+                }
+            } else if (diffs.size() > 2*safety_number) {
+                found_period = true;
+                for (ull_t k=safety_number;k!=0;k--) {
+                    if (diffs[diffs.size()-k]!=diffs[2*safety_number-k]) {
+                        found_period = false;
+                        break;
+                    }
+                }
+                if (found_period) {
+                    // Unfortunately, 1000000000000 != i mod (i-i_at_2sn), so we cannot "simply" calculate answer now because tower top is not right
+                    mod = (i-i_at_2sn);
+                    prev = ym_at_2sn;
+                    diffs.clear();
+
+                    if(verb_lvl)
+                        std::cout<<y_max-prev<<std::endl;
+                }
+            } else if (diffs.size() == 2*safety_number) {
+                i_at_2sn = i;
+                ym_at_2sn = y_max;
             }
             prev_diff=y_max-prev;
             prev=y_max;
@@ -216,7 +257,7 @@ int real_main(int argc, char** argv) {
                 std::cout<<"\n\nNow:\n";
                 put_piece(field, piece, x,y,'@');
                 for (auto a=field.rbegin();a!=field.rend();a++){for(auto b:a->r)std::cout<<b;std::cout<<std::endl;}
-                put_piece(field, piece, x,y,'.');
+                put_piece(field, piece, x,y,empty);
                 std::cout<<std::endl;
             }
 
@@ -234,7 +275,7 @@ int real_main(int argc, char** argv) {
                 std::cout<<"\n\nAfter move:\n";
                 put_piece(field, piece, x,y,'@');
                 for (auto a=field.rbegin();a!=field.rend();a++){for(auto b:a->r)std::cout<<b;std::cout<<std::endl;}
-                put_piece(field, piece, x,y,'.');
+                put_piece(field, piece, x,y,empty);
                 std::cout<<std::endl;
             }
 
@@ -243,7 +284,7 @@ int real_main(int argc, char** argv) {
                 y--;
             } else {
                 if (y_max < y+h[piece])y_max=y+h[piece];
-                put_piece(field, piece, x, y, '#');
+                put_piece(field, piece, x, y, piece_coloring(piece));
                 break;
             }
         }
