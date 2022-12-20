@@ -145,9 +145,10 @@ u_t build_robots(state s, blueprint b, u_t ore_max, u_t next_robot, ull_t ppid) 
         if(verb_lvl>1)std::cout<<mpid<<" started by "<<ppid<<" returns "<<result<<std::endl;
         return result;
     }
-    if (ore_max > s.ore_robots && s.next_minute < 15) {
-        // try building an ore robot, it can't hurt right?
-        // You can always build ore robots within the first 15 minutes, why wouldn't you?
+    if (ore_max > s.ore_robots && s.next_minute < 12) {
+        // Try building an ore robot, it can't hurt right?
+        // Building ore robot very early is always best (Maybe build 1 or 2 clay robots before last ore robot).
+        // Manual work showed that all ore robots needed should be build before minute 12 
         max_result = build_robots(s,b,ore_max,1,mpid);
     }
     if (b.obby_clay > s.clay_robots && 2*b.obby_clay > s.clays) {// Usually, you don't want to build clay robots when you can build loads of obby robots
@@ -158,7 +159,7 @@ u_t build_robots(state s, blueprint b, u_t ore_max, u_t next_robot, ull_t ppid) 
         result = build_robots(s,b,ore_max,3,mpid);
         if (result > max_result) max_result = result;
     }
-    if (s.obby_robots > 0) {// Always build geo robots!
+    if (s.obby_robots > 0) {// Always build geo robots, be hopefull!
         result = build_robots(s,b,ore_max,4,mpid);
         if (result > max_result) max_result = result;
     }
@@ -169,8 +170,8 @@ u_t build_robots(state s, blueprint b, u_t ore_max, u_t next_robot, ull_t ppid) 
 ull_t calc_ans_1(blueprint b) {
     state s;
     u_t max_ore_robots = b.clay_ore, result;
-    if (b.obby_ore>1+max_ore_robots)max_ore_robots=b.obby_ore;
-    if (b.geo_ore>1+max_ore_robots)max_ore_robots=b.geo_ore;
+    if (b.obby_ore>max_ore_robots)max_ore_robots=b.obby_ore;
+    if (b.geo_ore>max_ore_robots)max_ore_robots=b.geo_ore;
     return std::max(build_robots(s,b,max_ore_robots,0,0),build_robots(s,b,max_ore_robots,1,0));
 }
 
