@@ -41,21 +41,13 @@ public:
         front->back = this;
         front->front = old_front;
     }
-    void move_back() {
+    void loosen() {
         back->front = front;
         front->back = back;
-        back = back->back;
-        front = back->front;
-        back->front = this;
-        front->back = this;
     }
-    void move_front() {
-        back->front = front;
-        front->back = back;
-        front = front->front;
-        back = front->back;
-        back->front = this;
+    void fasten() {
         front->back = this;
+        back->front = this;
     }
 };
 
@@ -102,11 +94,17 @@ int real_main(int argc, char** argv) {
         if (A<=0) {
             // There's a -1 because the element we are moving is not counted.
             A = -1*((-1*A)%static_cast<ll_t>(ref.size()-1));
-            for (auto b=0;b<-1*A;b++)a->move_back();
+            a->loosen();
+            for (auto b=0;b<-1*A;b++)a->back=a->back->back;
+            a->front = a->back->front;
+            a->fasten();
         } else {
             // There's a -1 because the element we are moving is not counted.
             A = A%(ref.size()-1);
-            for (auto b=0;b<A;b++)a->move_front();
+            a->loosen();
+            for (auto b=0;b<A;b++)a->front=a->front->front;
+            a->back=a->front->back;
+            a->fasten();
         }
         if(verb_lvl>1)std::cout<<"Moved "<<a->val<<" between "<<a->back->val<<" and "<<a->front->val<<std::endl;
     }
