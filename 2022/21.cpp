@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <string>/*
-#include <vector>*/
+#include <string>
 #include <unordered_map>
 
 // Because I'm too lazy to type
@@ -60,17 +59,12 @@ ll_t get_monkeyval(std::string M,std::unordered_map<std::string, monkey>& ms) {
     if (m.op == '?') {
         return m.value;
     }
-    if (m.op=='?') {
-        std::cerr<<"Found monkey with NO_VALUE but no operation, please change NO_VALUE"<<std::endl;
-        exit(1);
-    }
     ll_t v1=get_monkeyval(m.m1, ms), v2=get_monkeyval(m.m2, ms);
     switch (m.op) {
         case '+':return v1+v2;
         case '-':return v1-v2;
         case '*':return v1*v2;
         case '/':return v1/v2;
-        case '=':return v1==v2;
     }
     std::cerr<<"Unknown operation: "<<m.op<<std::endl;
     exit(1);
@@ -112,6 +106,7 @@ ll_t get_monkeyval2(std::unordered_map<std::string, monkey>& ms) {
     return ans;
 }
 
+// Propagate can_be_simp from humn to root
 bool can_be_simp(std::string M, std::unordered_map<std::string, monkey>& ms) {
     auto A=ms.find(M);
     if (A==ms.end()) {
@@ -119,9 +114,9 @@ bool can_be_simp(std::string M, std::unordered_map<std::string, monkey>& ms) {
     }
     monkey m = A->second;
     if (M=="humn"){ms[M].can_be_simplified=false;return false;}
-    if (m.op == '?')return true;
+    if (m.op == '?') return true;
     if (can_be_simp(m.m1,ms) && can_be_simp(m.m2, ms)) return true;
-    ms[M].can_be_simplified=false;
+    ms[M].can_be_simplified = false;
     return false;
 }
 
@@ -166,12 +161,8 @@ int real_main(int argc, char** argv) {
 
     std::cout<<get_monkeyval("root", monkeys)<<std::endl;
 
-    monkeys["root"].op='=';
     can_be_simp("root", monkeys);
-
     std::cout<<get_monkeyval2(monkeys)<<std::endl;
-
-    // do things without input
     return 0;
 }
 

@@ -2,8 +2,6 @@
 #include <fstream>
 #include <chrono>
 #include <string>
-#include <vector>/*
-#include <unordered_map>*/
 
 // Because I'm too lazy to type
 typedef uint64_t ull_t;
@@ -28,19 +26,18 @@ void read_or_die(std::string pattern, std::istream& input) {
     }
 }
 
-const bool part2=true;
+const bool part2=false;
 
 class dll_ele {
 public:
     ll_t val;
     dll_ele *front, *back;
-    dll_ele(ll_t v):val(v){}
-    dll_ele(){}
+    dll_ele(){front=back=this;}
     void add_to_front(dll_ele* e) {
-        dll_ele* old_front=front;
-        old_front->back = front = e;
-        front->back = this;
-        front->front = old_front;
+        e->front = front;
+        front->back = e;
+        front = e;
+        e->back = this;
     }
     void loosen() {
         back->front = front;
@@ -75,8 +72,7 @@ int real_main(int argc, char** argv) {
     input>>v;
     if (part2)v*=p2const;
     dll_ele ref[5000];
-    ref[0] = dll_ele(v);
-    ref[0].back=ref[0].front=&ref[0];
+    ref[0].val = v;
 
     dll_ele* mylist= &ref[0];
     read_or_die("\n",input);
@@ -84,7 +80,8 @@ int real_main(int argc, char** argv) {
         input>>v;
         if (part2)v*=p2const;
         if (v==0)pos0=size;
-        ref[size]=dll_ele(v);
+        if (size>=5000){std::cerr<<"Too many numbers!"<<std::endl;return 1;}
+        ref[size].val = v;
         mylist->add_to_front(&ref[size]);
         size++;
         mylist = mylist->front;
@@ -96,21 +93,19 @@ int real_main(int argc, char** argv) {
     for (int i=0;i<1+9*part2;i++)
     for (u_t j=0;j<size;j++) {
         ll_t A=ref[j].val;
+        ref[j].loosen();
         if (A<=0) {
             // There's a -1 because the element we are moving is not counted.
-            A = -1*((-1*A)%static_cast<ll_t>(size-1));
-            ref[j].loosen();
+            A = -1*((-1*A)%(size-1));
             for (auto b=0;b<-1*A;b++)ref[j].back=ref[j].back->back;
             ref[j].front = ref[j].back->front;
-            ref[j].fasten();
         } else {
             // There's a -1 because the element we are moving is not counted.
             A = A%(size-1);
-            ref[j].loosen();
             for (auto b=0;b<A;b++)ref[j].front=ref[j].front->front;
             ref[j].back=ref[j].front->back;
-            ref[j].fasten();
         }
+        ref[j].fasten();
         if(verb_lvl>1)std::cout<<"Moved "<<ref[j].val<<" between "<<ref[j].back->val<<" and "<<ref[j].front->val<<std::endl;
     }
 
