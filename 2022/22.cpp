@@ -29,7 +29,6 @@ void read_or_die(std::string pattern, std::istream& input) {
 }
 
 void turn_right(int& dx, int& dy) {
-std::cout<<"Turning right"<<std::endl;
     if (dx==0) {
         dx = -1*dy;
         dy = 0;
@@ -39,7 +38,6 @@ std::cout<<"Turning right"<<std::endl;
     }
 }
 void turn_left(int& dx, int& dy) {
-std::cout<<"Turning left"<<std::endl;
     if (dx==0) {
         dx = dy;
         dy = 0;
@@ -57,7 +55,7 @@ int turn_to_val(int dx, int dy) {
 }
 
 
-void walk(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
+bool walk(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
     int oldX=x, oldY=y;
     if (dx==0) {
         if (dy<0) {
@@ -78,9 +76,10 @@ void walk(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
         else x++;
         while(field[y][x]==' ')x=(x+1)%field[y].size();
     }
-    if(field[y][x]=='#'){x=oldX;y=oldY;}
-} 
-void walk2(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
+    if(field[y][x]=='#'){x=oldX;y=oldY;return false;}
+    return true;
+}
+bool walk2(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
     int oldX=x, oldY=y, oldDx=dx, oldDy=dy;
     if (dx==0) {
         if (dy<0) {// Walking up
@@ -173,7 +172,8 @@ void walk2(int& x, int& y, int& dx, int& dy, std::vector<std::string> field) {
         }
         else x++;
     }
-    if(field[y][x]=='#'){x=oldX;y=oldY;dx=oldDx;dy=oldDy;}
+    if(field[y][x]=='#'){x=oldX;y=oldY;dx=oldDx;dy=oldDy;return false;}
+    return true;
 } 
 
 int real_main(int argc, char** argv) {
@@ -203,22 +203,26 @@ int real_main(int argc, char** argv) {
         std::getline(input,line);
     }
 
-    int x=0,y=0,dx=1,dy=0;
+    int x=0,y=0,dx=1,dy=0,x1=0,y1=0,dx1=1,dy1=0;
     while(field[y][x]==' ')x++;
+    while(field[y1][x1]==' ')x1++;
     while (std::isdigit(input.peek())) {
         u_t times;
         input>>times;
-        std::cout<<"Trying to walk "<<times<<" in direction "<<dx<<','<<dy<<" starting from "<<x<<','<<y<<std::endl;
-        for (u_t i=0;i<times;i++)walk2(x,y,dx,dy,field);
-        std::cout<<"Walking "<<times<<" in direction "<<dx<<','<<dy<<" brings us at "<<x<<','<<y<<std::endl;
-//        for(u_t i=0;i<field.size();i++){for(u_t j=0;j<field[i].size();j++)std::cout<<(i==y&&j==x?'X':field[i][j]);std::cout<<' '<<i<<std::endl;}
+        for (u_t i=0;i<times;i++) {
+            if(!walk(x1,y1,dx1,dy1,field))break;
+        }
+        for (u_t i=0;i<times;i++) {
+            if(!walk2(x,y,dx,dy,field))break;
+        }
         switch(input.get()) {
-            case 'L':turn_left(dx,dy);break;
-            case 'R':turn_right(dx,dy);break;
+            case 'L':turn_left(dx1,dy1);turn_left(dx,dy);break;
+            case 'R':turn_right(dx1,dy1);turn_right(dx,dy);break;
         }
     }
     input.close();
 
+    std::cout<<(1000*(y1+1)+4*(x1+1)+turn_to_val(dx1,dy1))<<std::endl;
     std::cout<<(1000*(y+1)+4*(x+1)+turn_to_val(dx,dy))<<std::endl;
     // do things without input
     return 0;
