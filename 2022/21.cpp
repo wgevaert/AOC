@@ -56,18 +56,21 @@ ll_t get_monkeyval(std::string M,std::unordered_map<std::string, monkey>& ms) {
         std::cerr<<"Could not find "<<M<<" in monkeys."<<std::endl;exit(1);
     }
     monkey m = A->second;
-    if (m.op == '?') {
+    if (m.value != NO_VALUE) {
         return m.value;
     }
-    ll_t v1=get_monkeyval(m.m1, ms), v2=get_monkeyval(m.m2, ms);
+    ll_t val,v1=get_monkeyval(m.m1, ms), v2=get_monkeyval(m.m2, ms);
     switch (m.op) {
-        case '+':return v1+v2;
-        case '-':return v1-v2;
-        case '*':return v1*v2;
-        case '/':return v1/v2;
+        case '+':val=v1+v2;break;
+        case '-':val=v1-v2;break;
+        case '*':val=v1*v2;break;
+        case '/':val=v1/v2;break;
+        default:
+            std::cerr<<"Unknown operation: "<<m.op<<std::endl;
+            exit(1);
     }
-    std::cerr<<"Unknown operation: "<<m.op<<std::endl;
-    exit(1);
+    ms[M].value=val;
+    return val;
 }
 
 ll_t get_monkeyval2(std::unordered_map<std::string, monkey>& ms) {
